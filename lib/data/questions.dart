@@ -11,4 +11,13 @@ final questions = [
         Option(code: 'D', text: '기둥', isCorrect: false),
       ],
   ),
+  Question(
+    text: '창 6: 9에 기록된 노아에 대한 설명 중 옳지 않은 것은 어느것인가?',
+    options: [
+      Option(code: 'A', text: '지혜로운 자', isCorrect: true),
+      Option(code: 'B', text: '의인', isCorrect: false),
+      Option(code: 'C', text: '하나님과 동행하는 자', isCorrect: false),
+      Option(code: 'D', text: '완전한 자', isCorrect: false),
+    ],
+  ),
 ];

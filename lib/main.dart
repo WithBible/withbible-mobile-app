@@ -4,7 +4,7 @@ import 'package:withbible_app/widget/questions_widget.dart';
 import 'package:withbible_app/data/questions.dart';
 
 void main() {
-  runApp(QuestionsWidget(category: Category(questions: questions),));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: QuestionsWidget(
-        category: widget.category,
-      )
+    return MaterialApp(
+      title: '위드바이블',
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      home: QuestionsWidget(category: Category(questions: questions),)
     );
   }
 }
