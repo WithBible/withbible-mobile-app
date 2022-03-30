@@ -5,13 +5,12 @@ import 'package:withbible_app/utils.dart';
 
 class OptionsWidget extends StatelessWidget {
   final Question question;
-
-  // final ValueChanged<Option> onClickedOption;
+  final ValueChanged<Option> onClickedOption;
 
   const OptionsWidget({
     Key? key,
     required this.question,
-    // required this.onClickedOption
+    required this.onClickedOption
   }) : super(key: key);
 
   @override
@@ -27,7 +26,7 @@ class OptionsWidget extends StatelessWidget {
 
   Widget buildOption(BuildContext context, Option option) {
     return GestureDetector(
-        // onTap: () => onClickedOption(option),
+        onTap: () => onClickedOption(option),
         child: Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(

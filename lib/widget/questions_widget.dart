@@ -6,13 +6,12 @@ import 'package:withbible_app/widget/options_widget.dart';
 
 class QuestionsWidget extends StatelessWidget {
   final Category category;
-
-  // final ValueChanged<Option> onClickedOption;
+  final ValueChanged<Option> onClickedOption;
 
   const QuestionsWidget({
     Key? key,
     required this.category,
-    // required this.onClickedOption
+    required this.onClickedOption
   }) : super(key: key);
 
   @override
@@ -47,7 +46,7 @@ class QuestionsWidget extends StatelessWidget {
           Expanded(
               child: OptionsWidget(
                 question: question,
-                // onClickedOption: onClickedOption,
+                onClickedOption: onClickedOption,
               ))
         ],
       ),
