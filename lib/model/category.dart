@@ -1,9 +1,21 @@
-import 'question.dart';
+import 'package:flutter/material.dart';
+import 'package:withbible_app/model/question.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Category {
+  final String categoryName;
+  final String description;
+  final Color backgroundColor;
+  final IconData icon;
   final List<Question> questions;
+  final String imageUrl;
 
   Category({
-    required this.questions
+    required this.imageUrl,
+    required this.questions,
+    required this.categoryName,
+    this.description = '',
+    this.backgroundColor = const Color(0xff20aebe),
+    this.icon = FontAwesomeIcons.question,
   });
 }
