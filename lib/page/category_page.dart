@@ -30,18 +30,28 @@ class _CategoryPageState extends State<CategoryPage> {
     return Scaffold(
         body: QuestionsWidget(
       category: widget.category,
+      controller: controller,
+      onChangedPage: (index) => nextQuestion(index: index),
       onClickedOption: selectOption,
     ));
   }
 
   void selectOption(Option option) {
-    if(question.isLocked){
+    if (question.isLocked) {
       return;
-    }else{
+    } else {
       setState(() {
         question.isLocked = true;
         question.selectedOption = option;
       });
     }
+  }
+
+  void nextQuestion({required int index}) {
+    final indexPage = index;
+
+    setState(() {
+      question = widget.category.questions[indexPage];
+    });
   }
 }

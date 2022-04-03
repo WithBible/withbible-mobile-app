@@ -7,11 +7,9 @@ class OptionsWidget extends StatelessWidget {
   final Question question;
   final ValueChanged<Option> onClickedOption;
 
-  const OptionsWidget({
-    Key? key,
-    required this.question,
-    required this.onClickedOption
-  }) : super(key: key);
+  const OptionsWidget(
+      {Key? key, required this.question, required this.onClickedOption})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +23,34 @@ class OptionsWidget extends StatelessWidget {
   }
 
   Widget buildOption(BuildContext context, Option option) {
+    final color = getColorForOption(option, question);
+
     return GestureDetector(
         onTap: () => onClickedOption(option),
         child: Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-      ),
-      child: buildAnswer(option),
-    ));
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            children: [
+              buildAnswer(option),
+            ],
+          )
+        )
+    );
   }
 
-  Widget buildAnswer(option) {
+  Widget buildAnswer(Option option) {
     return SizedBox(
       height: 50,
       child: Row(
         children: [
-          Text(option.code,
-              style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+              option.code,
+              style: const TextStyle(fontWeight: FontWeight.bold)
+          ),
           const SizedBox(width: 12),
           Text(
             option.text,
@@ -51,5 +59,15 @@ class OptionsWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Color getColorForOption(Option option, Question question) {
+    final isSelected = option == question.selectedOption;
+
+    if(!isSelected){
+      return Colors.grey.shade200;
+    }else{
+      return option.isCorrect ? Colors.green : Colors.red;
+    }
   }
 }

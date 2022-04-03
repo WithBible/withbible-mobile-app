@@ -6,17 +6,23 @@ import 'package:withbible_app/widget/options_widget.dart';
 
 class QuestionsWidget extends StatelessWidget {
   final Category category;
+  final PageController controller;
+  final ValueChanged<int> onChangedPage;
   final ValueChanged<Option> onClickedOption;
 
   const QuestionsWidget({
     Key? key,
     required this.category,
+    required this.controller,
+    required this.onChangedPage,
     required this.onClickedOption
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
+      controller: controller,
+      onPageChanged: onChangedPage,
       itemCount: category.questions.length,
       itemBuilder: (context, index) {
         final question = category.questions[index];
