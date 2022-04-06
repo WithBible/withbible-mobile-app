@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:withbible_app/data/categories.dart';
-import 'package:withbible_app/page/category_page.dart';
+import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/page/home_page.dart';
 
 void main() {
@@ -15,8 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '위드바이블',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: HomePage(),
+      theme: ThemeHelper.getThemeData(),
+      home: const HomePage(),
     );
   }
 }

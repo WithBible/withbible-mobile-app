@@ -1,14 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:withbible_app/common/alert_util.dart';
 import 'package:withbible_app/data/categories.dart';
 import 'package:withbible_app/data/user.dart';
 import 'package:withbible_app/widget/category_header_widget.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: const Icon(Icons.menu),
           elevation: 0,
           title: const Text('성경 졸업고사 퀴즈'),
           bottom: PreferredSize(
@@ -31,6 +36,7 @@ class HomePage extends StatelessWidget {
             SizedBox(width: 12),
           ],
         ),
+        drawer: navigationDrawer(context),
         body: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(16),
@@ -75,6 +81,55 @@ class HomePage extends StatelessWidget {
             .map((category) => CategoryHeaderWidget(category: category))
             .toList(),
       ),
+    );
+  }
+
+  Drawer navigationDrawer(BuildContext context){
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              color: Colors.deepPurple
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "Version: 1.00",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            title: const Text('Home'),
+            onTap: () {
+              Navigator.pop(context);
+            }
+          ),
+          const Divider(
+            thickness: 2,
+          ),
+          ListTile(
+            title: const Text('About'),
+            onTap: (){
+              AlertUtil.showAlert(context, "About us", "More at ...");
+            }
+          ),
+          ListTile(
+            title: const Text('Exit'),
+            onTap: (){
+              if(Platform.isAndroid){
+                SystemNavigator.pop();
+              }else if(Platform.isIOS){
+                exit(0);
+              }
+            }
+          )
+        ],
+      )
     );
   }
 }
