@@ -14,4 +14,8 @@ class ThemeHelper{
       )
     );
   }
+
+  static roundBoxDeco({Color color = Colors.white, double radius = 15}) {
+    return BoxDecoration(color: color, borderRadius: BorderRadius.all(Radius.circular(radius)));
+  }
 }
