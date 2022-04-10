@@ -1,11 +1,13 @@
 class Option {
-  final String code;
-  final String text;
-  final bool isCorrect;
+  late String code;
+  late String text;
+  late bool isCorrect;
 
-  Option({
-    required this.code,
-    required this.text,
-    required this.isCorrect,
-  });
+  Option(this.code, this.text, this.isCorrect);
+
+  Option.fromJson(dynamic json) {
+    code = json["code"];
+    text = json["text"];
+    isCorrect = json["isCorrect"];
+  }
 }

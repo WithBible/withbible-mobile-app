@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:withbible_app/common/alert_util.dart';
 import 'package:withbible_app/data/categories.dart';
 import 'package:withbible_app/data/user.dart';
+import 'package:withbible_app/page/quiz_category_detail_page.dart';
 import 'package:withbible_app/widget/category_header_widget.dart';
 
 class HomePage extends StatelessWidget {
+  static const routeName = "/home";
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -42,7 +44,7 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           children: [
             const SizedBox(height: 8),
-            buildCategories(),
+            buildCategories(context),
           ],
         ));
   }
@@ -67,7 +69,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget buildCategories() {
+  Widget buildCategories(BuildContext context) {
     return SizedBox(
       height: 400,
       child: GridView(
@@ -78,58 +80,59 @@ class HomePage extends StatelessWidget {
           mainAxisSpacing: 10,
         ),
         children: categories
-            .map((category) => CategoryHeaderWidget(category: category))
+            .map((category) => GestureDetector(
+                  child: CategoryHeaderWidget(category: category),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                        QuizCategoryDetailPage.routeName,
+                        arguments: category);
+                  },
+                ))
             .toList(),
       ),
     );
   }
 
-  Drawer navigationDrawer(BuildContext context){
+  Drawer navigationDrawer(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.deepPurple
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "Version: 1.00",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ],
-            ),
+        child: ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        DrawerHeader(
+          decoration: const BoxDecoration(color: Colors.deepPurple),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                "Version: 1.00",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ],
           ),
-          ListTile(
+        ),
+        ListTile(
             title: const Text('Home'),
             onTap: () {
               Navigator.pop(context);
-            }
-          ),
-          const Divider(
-            thickness: 2,
-          ),
-          ListTile(
+            }),
+        const Divider(
+          thickness: 2,
+        ),
+        ListTile(
             title: const Text('About'),
-            onTap: (){
+            onTap: () {
               AlertUtil.showAlert(context, "About us", "More at ...");
-            }
-          ),
-          ListTile(
+            }),
+        ListTile(
             title: const Text('Exit'),
-            onTap: (){
-              if(Platform.isAndroid){
+            onTap: () {
+              if (Platform.isAndroid) {
                 SystemNavigator.pop();
-              }else if(Platform.isIOS){
+              } else if (Platform.isIOS) {
                 exit(0);
               }
-            }
-          )
-        ],
-      )
-    );
+            })
+      ],
+    ));
   }
 }

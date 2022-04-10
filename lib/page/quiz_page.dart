@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:withbible_app/common/extensions.dart';
 import 'package:withbible_app/common/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/dto/option_selection.dart';
 import 'package:withbible_app/model/option.dart';
 import 'package:withbible_app/model/question.dart';
 import 'package:withbible_app/model/quiz.dart';
-import 'package:withbible_app/widget/questions_widget.dart';
+import 'package:withbible_app/model/quiz_history.dart';
+import 'package:withbible_app/model/quiz_result.dart';
+import 'package:withbible_app/page/quiz_result_page.dart';
+import 'package:withbible_app/service/quiz_engine.dart';
 
 class QuizPage extends StatefulWidget {
-  static const routeName = "/question";
+  static const routeName = "/quiz";
   late Quiz quiz;
 
-  QuizPage({Key? key}) : super(key: key);
+  QuizPage(this.quiz, {Key? key}) : super(key: key);
 
   @override
   _QuizPageState createState() => _QuizPageState(quiz);
@@ -27,6 +31,7 @@ class _QuizPageState extends State<QuizPage> {
 
   _QuizPageState(this.quiz) {
     store = QuizStore();
+    engine = QuizEngine(quiz, onNextQuestion, onQuizComplete);
   }
 
   @override
@@ -78,7 +83,34 @@ class _QuizPageState extends State<QuizPage> {
             );
             return optionWidget;
           }).toList(),
-        )
-    );
+        ));
+  }
+
+  void onNextQuestion(Question question) {
+    setState(() {
+      this.question = question;
+      _optionSerial = {};
+
+      for (var i = 0; i < question.options.length; i++) {
+        _optionSerial[i] = OptionSelection(String.fromCharCode(65 + i), false);
+      }
+    });
+  }
+
+  void onQuizComplete(Quiz quiz, double total, Duration takenTime) {
+    store.getCategoryAsync(quiz.categoryId).then((category) {
+      store
+          .saveQuizHistory(QuizHistory(
+              category.id,
+              quiz.title,
+              "$total/${quiz.questions.length}",
+              takenTime.format(),
+              DateTime.now(),
+              "Complete"))
+          .then((value) {
+        Navigator.pushReplacementNamed(context, QuizResultPage.routeName,
+            arguments: QuizResult(quiz, total));
+      });
+    });
   }
 }

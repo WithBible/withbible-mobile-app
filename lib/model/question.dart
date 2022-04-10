@@ -1,15 +1,17 @@
 import 'package:withbible_app/model/option.dart';
 
 class Question {
-  final String text;
-  final List<Option> options;
-  bool isLocked;
+  late String text;
+  late List<Option> options;
   Option? selectedOption;
 
-  Question({
-    required this.text,
-    required this.options,
-    this.isLocked = false,
-    this.selectedOption,
-  });
+  Question(
+    this.text,
+    this.options,
+  );
+
+  Question.fromJson(dynamic json) {
+    text = json["text"];
+    options = List<Option>.from(json["options"].map((x) => Option.fromJson(x)));
+  }
 }

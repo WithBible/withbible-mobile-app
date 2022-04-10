@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:withbible_app/common/quiz_store.dart';
+import 'package:withbible_app/common/route_generator.dart';
 import 'package:withbible_app/common/theme_helper.dart';
-import 'package:withbible_app/page/home_page.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await QuizStore.initPrefs();
+  runApp(const QuizApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class QuizApp extends StatelessWidget {
+  const QuizApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -15,7 +18,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '위드바이블',
       theme: ThemeHelper.getThemeData(),
-      home: const HomePage(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: "/",
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
