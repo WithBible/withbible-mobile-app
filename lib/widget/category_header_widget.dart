@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:withbible_app/model/category.dart';
-import 'package:withbible_app/page/category_page.dart';
+import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
 
 class CategoryHeaderWidget extends StatelessWidget {
   final Category category;
@@ -13,7 +13,7 @@ class CategoryHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => CategoryPage(category: category))),
+          builder: (context) => QuizCategoryDetailScreen(category))),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
@@ -25,7 +25,7 @@ class CategoryHeaderWidget extends StatelessWidget {
           children: [
             FaIcon(category.icon, color: Colors.white, size: 36),
             const SizedBox(height: 12),
-            Text(category.categoryName,
+            Text(category.name,
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

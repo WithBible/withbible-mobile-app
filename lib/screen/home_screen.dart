@@ -5,12 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:withbible_app/common/alert_util.dart';
 import 'package:withbible_app/data/categories.dart';
 import 'package:withbible_app/data/user.dart';
-import 'package:withbible_app/page/quiz_category_detail_page.dart';
+import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
 import 'package:withbible_app/widget/category_header_widget.dart';
 
-class HomePage extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   static const routeName = "/home";
-  const HomePage({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
                   child: CategoryHeaderWidget(category: category),
                   onTap: () {
                     Navigator.of(context).pushNamed(
-                        QuizCategoryDetailPage.routeName,
+                        QuizCategoryDetailScreen.routeName,
                         arguments: category);
                   },
                 ))

@@ -16,7 +16,7 @@ class QuizStore {
     prefs = await SharedPreferences.getInstance();
   }
 
-  Future<List<Quiz>> loadQuizListByCategoryAsync(String categoryId) async {
+  Future<List<Quiz>> loadQuizListByCategoryAsync(int categoryId) async {
     List<Quiz> quizList = [];
     quizList = await JsonUtil.loadFromJsonAsync<Quiz>(
         quizJsonFileName, Quiz.jsonToObject);
@@ -40,7 +40,7 @@ class QuizStore {
     return quizHistoryList;
   }
 
-  Future<Category> getCategoryAsync(String categoryId) async {
+  Future<Category> getCategoryAsync(int categoryId) async {
     List<Category> categoryList = [];
     categoryList = categories;
     return categoryList.where((element) => element.id == categoryId).first;

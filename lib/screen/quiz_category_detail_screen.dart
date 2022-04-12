@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:withbible_app/common/quiz_store.dart';
+import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/category.dart';
 import 'package:withbible_app/model/quiz.dart';
 
-class QuizCategoryDetailPage extends StatefulWidget {
+class QuizCategoryDetailScreen extends StatefulWidget {
   static const routeName = '/categoryDetail';
   late Category category;
 
-  QuizCategoryDetailPage(this.category, {Key? key}) : super(key: key);
+  QuizCategoryDetailScreen(this.category, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _QuizCategoryDetailPageState(category);
+  State<StatefulWidget> createState() => _QuizCategoryDetailScreenState(category);
 }
 
-class _QuizCategoryDetailPageState extends State<QuizCategoryDetailPage> {
+class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
   late Category category;
 
-  _QuizCategoryDetailPageState(this.category);
+  _QuizCategoryDetailScreenState(this.category);
 
   late List<Quiz> quizList = [];
 
@@ -28,7 +28,6 @@ class _QuizCategoryDetailPageState extends State<QuizCategoryDetailPage> {
     quizStore.loadQuizListByCategoryAsync(category.id).then((value) {
       setState(() {
         quizList = value;
-        print(quizList);
       });
     });
     super.initState();
@@ -43,7 +42,7 @@ class _QuizCategoryDetailPageState extends State<QuizCategoryDetailPage> {
         alignment: Alignment.center,
         child: Column(
           children: [
-            pageHeader(category),
+            screenHeader(category),
             Expanded(
               child: categoryDetailView(quizList),
             ),
@@ -53,7 +52,7 @@ class _QuizCategoryDetailPageState extends State<QuizCategoryDetailPage> {
     ));
   }
 
-  pageHeader(Category category) {
+  screenHeader(Category category) {
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       alignment: Alignment.centerLeft,

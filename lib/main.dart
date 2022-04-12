@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:withbible_app/common/quiz_store.dart';
+import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/route_generator.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 
