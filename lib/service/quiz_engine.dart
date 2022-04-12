@@ -52,9 +52,19 @@ class QuizEngine {
           var takenTime = quizStartTime.difference(DateTime.now());
           onCompleted(quiz, totalCorrect, takenTime);
         }
+        await Future.delayed(const Duration(milliseconds: 500));
       } while (question != null && isRunning);
       return false;
     });
+  }
+
+  void stop(){
+    isRunning = false;
+  }
+
+  void updateAnswer(int questionIndex, int answer) {
+    var question = quiz.questions[questionIndex];
+    questionAnswer[questionIndex] = question.options[answer].isCorrect;
   }
 
   Question? _nextQuestion(Quiz quiz, int index) {

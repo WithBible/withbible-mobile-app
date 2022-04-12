@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:withbible_app/common/extensions.dart';
-import 'package:withbible_app/common/quiz_store.dart';
+import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/dto/option_selection.dart';
 import 'package:withbible_app/model/option.dart';
@@ -8,35 +8,52 @@ import 'package:withbible_app/model/question.dart';
 import 'package:withbible_app/model/quiz.dart';
 import 'package:withbible_app/model/quiz_history.dart';
 import 'package:withbible_app/model/quiz_result.dart';
-import 'package:withbible_app/page/quiz_result_page.dart';
+import 'package:withbible_app/screen/quiz_result_screen.dart';
 import 'package:withbible_app/service/quiz_engine.dart';
+import 'package:withbible_app/widget/question_options_widget.dart';
 
-class QuizPage extends StatefulWidget {
+class QuizScreen extends StatefulWidget {
   static const routeName = "/quiz";
   late Quiz quiz;
 
-  QuizPage(this.quiz, {Key? key}) : super(key: key);
+  QuizScreen(this.quiz, {Key? key}) : super(key: key);
 
   @override
-  _QuizPageState createState() => _QuizPageState(quiz);
+  _QuizScreenState createState() => _QuizScreenState(quiz);
 }
 
-class _QuizPageState extends State<QuizPage> {
+class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver{
   late QuizEngine engine;
   late QuizStore store;
   late Quiz quiz;
   Question? question;
+  AppLifecycleState? state;
 
   Map<int, OptionSelection> _optionSerial = {};
 
-  _QuizPageState(this.quiz) {
+  _QuizScreenState(this.quiz) {
     store = QuizStore();
     engine = QuizEngine(quiz, onNextQuestion, onQuizComplete);
   }
 
   @override
   void initState() {
+    engine.start();
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    this.state = state;
+  }
+
+  @override
+  void dispose() {
+    engine.stop();
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -79,7 +96,24 @@ class _QuizPageState extends State<QuizPage> {
           children: List<Option>.from(question?.options ?? []).map((each) {
             int optionIndex = question!.options.indexOf(each);
             var optionWidget = GestureDetector(
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  engine.updateAnswer(quiz.questions.indexOf(question!), optionIndex);
+                  for (int i = 0; i < _optionSerial.length; i++) {
+                    _optionSerial[i]!.isSelected = false;
+                  }
+                  _optionSerial.update(optionIndex, (value) {
+                    value.isSelected = true;
+                    return value;
+                  });
+                });
+              },
+              child: QuestionOptionsWidget(
+                optionIndex,
+                _optionSerial[optionIndex]!.optionText,
+                each.text,
+                isSelected: _optionSerial[optionIndex]!.isSelected,
+              )
             );
             return optionWidget;
           }).toList(),
@@ -108,7 +142,7 @@ class _QuizPageState extends State<QuizPage> {
               DateTime.now(),
               "Complete"))
           .then((value) {
-        Navigator.pushReplacementNamed(context, QuizResultPage.routeName,
+        Navigator.pushReplacementNamed(context, QuizResultScreen.routeName,
             arguments: QuizResult(quiz, total));
       });
     });

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Category {
-  final String id;
+  final int id;
   final String name;
   final String description;
   final Color backgroundColor;
@@ -10,7 +10,7 @@ class Category {
   final String imagePath;
 
   Category({
-    this.id = '',
+    this.id = 0,
     required this.imagePath,
     required this.name,
     this.description = '',

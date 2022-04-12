@@ -4,36 +4,36 @@ import 'package:withbible_app/model/category.dart';
 
 final categories = <Category>[
   Category(
-      id: '1',
+      id: 1,
       name: '모세오경',
       backgroundColor: Colors.pink,
-      imagePath: 'assets/pentateuch.png',
+      imagePath: '/images/pentateuch.png',
       icon: FontAwesomeIcons.bookBible),
   Category(
-      id: '2',
+      id: 2,
       name: '역사서',
-      imagePath: 'assets/pentateuch.png',
+      imagePath: '/images/pentateuch.png',
       icon: FontAwesomeIcons.landmark),
   Category(
-      id: '3',
+      id: 3,
       name: '선지서',
-      imagePath: 'assets/pentateuch.png',
+      imagePath: '/images/pentateuch.png',
       icon: FontAwesomeIcons.handSparkles),
   Category(
-      id: '4',
+      id: 4,
       name: '사복음서',
       backgroundColor: Colors.pink,
-      imagePath: 'assets/pentateuch.png',
+      imagePath: '/images/pentateuch.png',
       icon: FontAwesomeIcons.faceSmile),
   Category(
-      id: '5',
+      id: 5,
       name: '사도행전',
       backgroundColor: Colors.pink,
-      imagePath: 'assets/pentateuch.png',
+      imagePath: '/images/pentateuch.png',
       icon: FontAwesomeIcons.church),
   Category(
-      id: '6',
+      id: 6,
       name: '요한계시록',
-      imagePath: 'assets/pentateuch.png',
+      imagePath: '/images/pentateuch.png',
       icon: FontAwesomeIcons.personRays),
 ];
