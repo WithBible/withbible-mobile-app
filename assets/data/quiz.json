@@ -28,6 +28,31 @@
             "isCorrect": false
           }
         ]
+      },
+      {
+        "text": "멜기세덱에 대한 설명으로 틀린 것은 무엇인가?",
+        "options": [
+          {
+            "code": "A",
+            "text": "살렘왕",
+            "isCorrect": false
+          },
+          {
+            "code": "B",
+            "text": "하나님의 제사장",
+            "isCorrect": false
+          },
+          {
+            "code": "C",
+            "text": "사사",
+            "isCorrect": true
+          },
+          {
+            "code": "D",
+            "text": "아브라함을 축복한 사람",
+            "isCorrect": false
+          }
+        ]
       }
     ]
   },

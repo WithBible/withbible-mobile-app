@@ -24,6 +24,8 @@ class QuizEngine {
   void start() {
     questionIndex = 0;
     questionAnswer = {};
+    takenQuestions = [];
+    questionAnswer = {};
     isRunning = true;
     takeNewQuestion = true;
 
@@ -60,6 +62,10 @@ class QuizEngine {
 
   void stop(){
     isRunning = false;
+  }
+
+  void next(){
+    takeNewQuestion = true;
   }
 
   void updateAnswer(int questionIndex, int answer) {
