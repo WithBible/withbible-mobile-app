@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:withbible_app/common/alert_util.dart';
+import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/data/categories.dart';
 import 'package:withbible_app/data/user.dart';
 import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
@@ -26,27 +27,26 @@ class HomeScreen extends StatelessWidget {
               child: buildWelcome(username),
             ),
           ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.deepPurple, Colors.purple],
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomRight)),
-          ),
           actions: const [
             Icon(Icons.search),
             SizedBox(width: 12),
           ],
         ),
         drawer: navigationDrawer(context),
-        body: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(16),
-          children: [
-            const SizedBox(height: 8),
-            buildCategories(context),
-          ],
-        ));
+        body: Container(
+          decoration: BoxDecoration(
+            color: ThemeHelper.shadowColor
+          ),
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(16),
+            children: [
+              const SizedBox(height: 8),
+              buildCategories(context),
+            ],
+          ),
+        ),
+    );
   }
 
   Widget buildWelcome(String username) {
@@ -99,7 +99,7 @@ class HomeScreen extends StatelessWidget {
       padding: EdgeInsets.zero,
       children: [
         DrawerHeader(
-          decoration: const BoxDecoration(color: Colors.deepPurple),
+          decoration: BoxDecoration(color: ThemeHelper.accentColor),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [

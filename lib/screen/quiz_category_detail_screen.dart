@@ -12,7 +12,8 @@ class QuizCategoryDetailScreen extends StatefulWidget {
   QuizCategoryDetailScreen(this.category, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _QuizCategoryDetailScreenState(category);
+  State<StatefulWidget> createState() =>
+      _QuizCategoryDetailScreenState(category);
 }
 
 class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
@@ -38,6 +39,7 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
     return SafeArea(
         child: Scaffold(
       body: Container(
+        decoration: BoxDecoration(color: ThemeHelper.shadowColor),
         padding: const EdgeInsets.only(left: 10, right: 10),
         alignment: Alignment.center,
         child: Column(
@@ -59,14 +61,16 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
       child: Row(
         children: [
           GestureDetector(
-            child: FaIcon(category.icon, color: Colors.white, size: 36),
+            child: Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: const FaIcon(
+                FontAwesomeIcons.angleLeft,
+                color: Color(0xff8d5ac4),
+              ),
+            ),
             onTap: () {
               Navigator.pop(context);
             },
-          ),
-          Text(
-            "${category.name} Quiz",
-            style: Theme.of(context).textTheme.headline4,
           ),
         ],
       ),
@@ -95,7 +99,7 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
         width: 150,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: ThemeHelper.primaryColor,
+            color: ThemeHelper.accentColor,
             borderRadius: const BorderRadius.only(
               topRight: Radius.circular(15),
               bottomLeft: Radius.circular(15),
@@ -117,30 +121,33 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
           children: [
             categoryDetailsItemBadge(quiz),
             Container(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: ThemeHelper.roundBoxDeco(
-                            color: const Color(0xffE1E9F6), radius: 10),
-                        child: Image(
-                          image: AssetImage(category.imagePath),
-                          width: 130,
-                        )),
-                    Expanded(
-                        child: Column(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    decoration: ThemeHelper.roundBoxDeco(
+                        color: ThemeHelper.accentColor, radius: 10),
+                    child: FaIcon(category.icon, color: Colors.white, size: 36),
+                  ),
+                  Expanded(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           quiz.title,
-                          style: const TextStyle(fontSize: 22),
+                          style: const TextStyle(
+                              color: Color(0xff8d5ac4),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22),
                         )
                       ],
-                    ))
-                  ],
-                ))
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ));
   }

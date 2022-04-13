@@ -14,7 +14,7 @@ class Category {
     required this.imagePath,
     required this.name,
     this.description = '',
-    this.backgroundColor = const Color(0xff20aebe),
+    this.backgroundColor = const Color(0xfffbce7b),
     this.icon = FontAwesomeIcons.question,
   });
 }
