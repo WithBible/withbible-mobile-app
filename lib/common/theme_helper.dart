@@ -16,19 +16,11 @@ class ThemeHelper {
           color: accentColor,
           fontFamily: 'Baloo',
         ),
-        headline4: TextStyle(
-          color: accentColor,
+        headline5: const TextStyle(
+          color: Colors.white,
           fontFamily: 'Baloo',
         ),
       ),
-    );
-  }
-
-  static BoxDecoration fullScreenBgBoxDecoration(
-      {String backgroundAssetImage = "/images/Common.bg.png"}) {
-    return BoxDecoration(
-      image: DecorationImage(
-          image: AssetImage(backgroundAssetImage), fit: BoxFit.cover),
     );
   }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:withbible_app/model/category.dart';
 import 'package:withbible_app/model/quiz.dart';
+import 'package:withbible_app/model/quiz_result.dart';
 import 'package:withbible_app/screen/home_screen.dart';
 import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
+import 'package:withbible_app/screen/quiz_result_screen.dart';
 import 'package:withbible_app/screen/quiz_screen.dart';
 
 class RouteGenerator {
@@ -16,6 +18,13 @@ class RouteGenerator {
         if (args is Quiz) {
           return MaterialPageRoute(
             builder: (_) => QuizScreen(args),
+          );
+        }
+        return _errorRoute();
+      case QuizResultScreen.routeName:
+        if (args is QuizResult) {
+          return MaterialPageRoute(
+            builder: (_) => QuizResultScreen(args),
           );
         }
         return _errorRoute();

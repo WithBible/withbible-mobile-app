@@ -61,6 +61,7 @@ class QuizEngine {
   }
 
   void stop(){
+    takeNewQuestion = false;
     isRunning = false;
   }
 

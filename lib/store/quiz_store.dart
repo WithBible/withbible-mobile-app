@@ -28,28 +28,28 @@ class QuizStore {
   Future<List<QuizHistory>> loadQuizHistoryAsync() async {
     List<QuizHistory> quizHistoryList = [];
     var ifExists = QuizStore.prefs!.containsKey(quizHistoryListKey);
+
     if (ifExists) {
       var quizHistoryJson = QuizStore.prefs!.getString(quizHistoryListKey);
+
       if (quizHistoryJson != null) {
         quizHistoryList = await JsonUtil.loadFromJsonStringAsync<QuizHistory>(
             quizHistoryJson, QuizHistory.jsonToObject);
+        quizHistoryList = quizHistoryList.reversed.toList();
       }
-
-      quizHistoryList = quizHistoryList.reversed.toList();
     }
     return quizHistoryList;
   }
 
-  Future<Category> getCategoryAsync(int categoryId) async {
-    List<Category> categoryList = [];
-    categoryList = categories;
+  Future<Category> getCategoryLocalAsync(int categoryId) async {
+    List<Category> categoryList = categories;
     return categoryList.where((element) => element.id == categoryId).first;
   }
 
   Future<void> saveQuizHistory(QuizHistory history) async {
-    var historyList = await loadQuizHistoryAsync();
+    List<QuizHistory> historyList = await loadQuizHistoryAsync();
     historyList.add(history);
-    var historyJson = jsonEncode(historyList);
+    String historyJson = jsonEncode(historyList);
     prefs!.setString(quizHistoryListKey, historyJson);
   }
 }
