@@ -205,11 +205,12 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     store.getCategoryLocalAsync(quiz.categoryId).then((category) {
       store
           .saveQuizHistory(QuizHistory(
+              quiz.id,
               category.id,
               quiz.title,
               "$total/${quiz.questions.length}",
               takenTime.format(),
-              DateFormat.yMMMMd().format(DateTime.now()),
+              DateFormat.yMEd().add_jms().format(DateTime.now()),
               "Complete"))
           .then((value) {
         Navigator.pushReplacementNamed(context, QuizResultScreen.routeName,

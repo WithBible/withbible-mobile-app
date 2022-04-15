@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "categoryId": 1,
     "title": "모세오경 01",
     "shuffleQuestions": true,
@@ -57,6 +58,40 @@
     ]
   },
   {
+    "id": 2,
+    "categoryId": 1,
+    "title": "모세오경 02",
+    "shuffleQuestions": true,
+    "questions": [
+      {
+        "text": "이스라엘 백성들이 애굽에서 노예로 있다가 해방된 출애굽을 기념하는 절기는 무엇인가?",
+        "options": [
+          {
+            "code": "A",
+            "text": "부림절",
+            "isCorrect": false
+          },
+          {
+            "code": "B",
+            "text": "나팔절",
+            "isCorrect": false
+          },
+          {
+            "code": "C",
+            "text": "유월절",
+            "isCorrect": true
+          },
+          {
+            "code": "D",
+            "text": "광복절",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
     "categoryId": 2,
     "title": "역사서 01",
     "shuffleQuestions": true,

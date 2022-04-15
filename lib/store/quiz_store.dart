@@ -52,4 +52,10 @@ class QuizStore {
     String historyJson = jsonEncode(historyList);
     prefs!.setString(quizHistoryListKey, historyJson);
   }
+
+  Future<Quiz> getQuizByIdAsync(int quizId, int categoryId) async {
+    var quizList = await loadQuizListByCategoryAsync(categoryId);
+    var quiz = quizList.where((element) => element.id == quizId).first;
+    return quiz;
+  }
 }
