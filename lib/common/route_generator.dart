@@ -7,12 +7,15 @@ import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
 import 'package:withbible_app/screen/quiz_history_screen.dart';
 import 'package:withbible_app/screen/quiz_result_screen.dart';
 import 'package:withbible_app/screen/quiz_screen.dart';
+import 'package:withbible_app/screen/splash_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
     switch (settings.name) {
+      case SplashScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case HomeScreen.routeName:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case QuizScreen.routeName:
@@ -30,16 +33,15 @@ class RouteGenerator {
         }
         return _errorRoute();
       case QuizHistoryScreen.routeName:
-        return MaterialPageRoute(builder: (_) => QuizHistoryScreen());
+        return MaterialPageRoute(builder: (_) => const QuizHistoryScreen());
       case QuizCategoryDetailScreen.routeName:
         if (args is Category) {
           return MaterialPageRoute(
-            builder: (_) => QuizCategoryDetailScreen(args)
-          );
+              builder: (_) => QuizCategoryDetailScreen(args));
         }
         return _errorRoute();
       default:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return _errorRoute();
     }
   }
 

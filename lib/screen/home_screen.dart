@@ -7,6 +7,7 @@ import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/data/categories.dart';
 import 'package:withbible_app/data/user.dart';
 import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
+import 'package:withbible_app/screen/quiz_history_screen.dart';
 import 'package:withbible_app/widget/category_header_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -115,6 +116,12 @@ class HomeScreen extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             }),
+        ListTile(
+          title: const Text('Quiz History'),
+          onTap: (){
+            Navigator.pushNamed(context, QuizHistoryScreen.routeName);
+          },
+        ),
         const Divider(
           thickness: 2,
         ),
