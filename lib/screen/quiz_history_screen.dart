@@ -130,7 +130,7 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
                   height: 50,
                   onPressed: () {
                     store
-                        .getQuizByIdAsync(quiz.quizId, quiz.categoryId)
+                        .getQuizByTitleAsync(quiz.title, quiz.categoryId)
                         .then((value) {
                       Navigator.pushReplacementNamed(
                           context, QuizScreen.routeName,

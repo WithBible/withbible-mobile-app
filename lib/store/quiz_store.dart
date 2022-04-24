@@ -53,9 +53,9 @@ class QuizStore {
     prefs!.setString(quizHistoryListKey, historyJson);
   }
 
-  Future<Quiz> getQuizByIdAsync(int quizId, int categoryId) async {
+  Future<Quiz> getQuizByTitleAsync(String quizTitle, int categoryId) async {
     var quizList = await loadQuizListByCategoryAsync(categoryId);
-    var quiz = quizList.where((element) => element.id == quizId).first;
+    var quiz = quizList.where((element) => element.title == quizTitle).first;
     return quiz;
   }
 }

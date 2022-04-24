@@ -80,7 +80,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     );
   }
 
-  Widget screenHeader(){
+  Widget screenHeader() {
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       alignment: Alignment.centerLeft,
@@ -156,12 +156,12 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     );
   }
 
-  Widget footerButton(){
+  Widget footerButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         DiscoButton(
-          onPressed: (){
+          onPressed: () {
             setState(() {
               engine.stop();
             });
@@ -205,7 +205,6 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     store.getCategoryLocalAsync(quiz.categoryId).then((category) {
       store
           .saveQuizHistory(QuizHistory(
-              quiz.id,
               category.id,
               quiz.title,
               "$total/${quiz.questions.length}",

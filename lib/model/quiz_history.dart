@@ -1,5 +1,4 @@
 class QuizHistory {
-  int quizId = 0;
   int categoryId = 0;
   String title = "";
   String score = "";
@@ -7,12 +6,11 @@ class QuizHistory {
   String date = "";
   String status = "";
 
-  QuizHistory(this.quizId, this.categoryId, this.title, this.score, this.timeTaken,
+  QuizHistory(this.categoryId, this.title, this.score, this.timeTaken,
       this.date, this.status);
 
   static jsonToObject(dynamic json) {
     return QuizHistory(
-      json["quizId"],
       json["categoryId"],
       json["title"],
       json["score"],
@@ -24,7 +22,6 @@ class QuizHistory {
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["quizId"] = quizId;
     map["categoryId"] = categoryId;
     map["title"] = title;
     map["score"] = score;

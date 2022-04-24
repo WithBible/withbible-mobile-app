@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "categoryId": 1,
     "title": "모세오경 01",
     "shuffleQuestions": true,
@@ -58,7 +57,6 @@
     ]
   },
   {
-    "id": 2,
     "categoryId": 1,
     "title": "모세오경 02",
     "shuffleQuestions": true,
@@ -91,7 +89,6 @@
     ]
   },
   {
-    "id": 3,
     "categoryId": 2,
     "title": "역사서 01",
     "shuffleQuestions": true,
