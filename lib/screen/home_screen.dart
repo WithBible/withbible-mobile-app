@@ -8,49 +8,60 @@ import 'package:withbible_app/data/categories.dart';
 import 'package:withbible_app/data/user.dart';
 import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
 import 'package:withbible_app/screen/quiz_history_screen.dart';
+import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/widget/category_header_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
+
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+class _HomeScreenState extends State<HomeScreen>{
+
+  @override
+  void initState() {
+    QuizStore.setName(name);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: const Text('성경 졸업고사 퀴즈'),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(80),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              alignment: Alignment.centerLeft,
-              child: buildWelcome(username),
-            ),
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text('성경 졸업고사 퀴즈'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(80),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            alignment: Alignment.centerLeft,
+            child: buildWelcome(name),
           ),
-          actions: const [
-            Icon(Icons.search),
-            SizedBox(width: 12),
+        ),
+        actions: const [
+          Icon(Icons.search),
+          SizedBox(width: 12),
+        ],
+      ),
+      drawer: navigationDrawer(context),
+      body: Container(
+        decoration: BoxDecoration(color: ThemeHelper.shadowColor),
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          children: [
+            const SizedBox(height: 8),
+            buildCategories(context),
           ],
         ),
-        drawer: navigationDrawer(context),
-        body: Container(
-          decoration: BoxDecoration(
-            color: ThemeHelper.shadowColor
-          ),
-          child: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(16),
-            children: [
-              const SizedBox(height: 8),
-              buildCategories(context),
-            ],
-          ),
-        ),
+      ),
     );
   }
 
-  Widget buildWelcome(String username) {
+  Widget buildWelcome(String name) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -59,7 +70,7 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
         Text(
-          username,
+          name,
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -118,7 +129,7 @@ class HomeScreen extends StatelessWidget {
             }),
         ListTile(
           title: const Text('Quiz History'),
-          onTap: (){
+          onTap: () {
             Navigator.pushNamed(context, QuizHistoryScreen.routeName);
           },
         ),

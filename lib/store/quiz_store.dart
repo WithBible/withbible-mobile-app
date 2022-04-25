@@ -58,4 +58,14 @@ class QuizStore {
     var quiz = quizList.where((element) => element.title == quizTitle).first;
     return quiz;
   }
+
+  static setName(String name) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.setString('name', name);
+  }
+
+  static getName(String name) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getString(name);
+  }
 }

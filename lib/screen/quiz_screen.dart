@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/extensions.dart';
 import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
@@ -28,22 +29,37 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   late QuizEngine engine;
   late QuizStore store;
+  late Api api;
   late Quiz quiz;
   Question? question;
   AppLifecycleState? state;
+  late String name;
 
   Map<int, OptionSelection> _optionSerial = {};
 
   _QuizScreenState(this.quiz) {
     store = QuizStore();
+    api = Api();
     engine = QuizEngine(quiz, onNextQuestion, onQuizComplete);
   }
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+
     engine.start();
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
+  }
+
+  _asyncMethod() async{
+    QuizStore.getName('name').then((name) {
+      setState(() {
+        name = name;
+      });
+    });
   }
 
   @override
@@ -203,8 +219,9 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
 
   void onQuizComplete(Quiz quiz, double total, Duration takenTime) {
     store.getCategoryLocalAsync(quiz.categoryId).then((category) {
-      store
+      api
           .saveQuizHistory(QuizHistory(
+              "",
               category.id,
               quiz.title,
               "$total/${quiz.questions.length}",

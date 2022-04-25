@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:withbible_app/api/api.dart';
-import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/category.dart';
 import 'package:withbible_app/model/quiz.dart';
@@ -19,6 +18,7 @@ class QuizCategoryDetailScreen extends StatefulWidget {
 
 class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
   late Category category;
+  late Api api;
 
   _QuizCategoryDetailScreenState(this.category);
 
@@ -26,7 +26,7 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
 
   @override
   void initState() {
-    var api = Api();
+    api = Api();
     api.loadQuizListByCategoryAsync(category.id).then((value) {
       setState(() {
         quizList = value;

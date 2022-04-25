@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/quiz_history.dart';
 import 'package:withbible_app/screen/quiz_screen.dart';
@@ -18,11 +19,14 @@ class QuizHistoryScreen extends StatefulWidget {
 class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
   List<QuizHistory> quizHistoryList = [];
   late QuizStore store;
+  late Api api;
 
   @override
   void initState() {
     store = QuizStore();
-    store.loadQuizHistoryAsync().then((value) {
+    api = Api();
+
+    api.loadQuizHistoryAsync().then((value){
       setState(() {
         quizHistoryList = value;
       });
