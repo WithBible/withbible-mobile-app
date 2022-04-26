@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/extensions.dart';
+import 'package:withbible_app/model/category.dart';
 import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/dto/option_selection.dart';
@@ -33,7 +34,6 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   late Quiz quiz;
   Question? question;
   AppLifecycleState? state;
-  late String name;
 
   Map<int, OptionSelection> _optionSerial = {};
 
@@ -45,21 +45,9 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _asyncMethod();
-    });
-
     engine.start();
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
-  }
-
-  _asyncMethod() async{
-    QuizStore.getName('name').then((name) {
-      setState(() {
-        name = name;
-      });
-    });
   }
 
   @override
@@ -218,20 +206,35 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   }
 
   void onQuizComplete(Quiz quiz, double total, Duration takenTime) {
-    store.getCategoryLocalAsync(quiz.categoryId).then((category) {
-      api
-          .saveQuizHistory(QuizHistory(
-              "",
-              category.id,
-              quiz.title,
-              "$total/${quiz.questions.length}",
-              takenTime.format(),
-              DateFormat.yMEd().add_jms().format(DateTime.now()),
-              "Complete"))
-          .then((value) {
-        Navigator.pushReplacementNamed(context, QuizResultScreen.routeName,
-            arguments: QuizResult(quiz, total));
-      });
+    Future nameFuture = QuizStore.getName('name');
+    Future categoryFuture = store.getCategoryLocalAsync(quiz.categoryId);
+
+    Future.wait([nameFuture, categoryFuture]).then((value) {
+      String name = value[0];
+      Category category = value[1];
+
+      // +++ loadQuizHistoryAsync
+      // +++ match quiz title
+      // +++ condition
+
+      api.saveQuizHistory(
+        QuizHistory(
+          name,
+          category.id,
+          quiz.title,
+          "$total/${quiz.questions.length}",
+          takenTime.format(),
+          DateFormat.yMEd().add_jms().format(DateTime.now()),
+          "Complete",
+        ),
+      );
+
+      // +++ Need inside then after saveQuizHistory
+      Navigator.pushReplacementNamed(
+        context,
+        QuizResultScreen.routeName,
+        arguments: QuizResult(quiz, total),
+      );
     });
   }
 }

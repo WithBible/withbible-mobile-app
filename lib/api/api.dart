@@ -5,11 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:withbible_app/model/quiz_history.dart';
 import 'package:withbible_app/store/quiz_store.dart';
 
-class Api{
+class Api {
   final String _url = "http://127.0.0.1:5000";
 
   Map<String, String> headers = {
-   "Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json"
   };
 
   Future<List<Quiz>> loadQuizListByCategoryAsync(int categoryId) async {
@@ -17,8 +18,8 @@ class Api{
     var response = await http.get(url, headers: headers);
     var jsonResult = json.decode(response.body);
 
-    List<Quiz> quizList =
-      List<Quiz>.from(jsonResult['data'].map((model) => Quiz.jsonToObject(model)));
+    List<Quiz> quizList = List<Quiz>.from(
+        jsonResult['data'].map((model) => Quiz.jsonToObject(model)));
 
     return quizList;
   }
@@ -35,8 +36,8 @@ class Api{
     var response = await http.get(url, headers: headers);
     var jsonResult = json.decode(response.body);
 
-    List<QuizHistory> quizHistoryList =
-      List<QuizHistory>.from(jsonResult['data'].map((model) => QuizHistory.jsonToObject(model)));
+    List<QuizHistory> quizHistoryList = List<QuizHistory>.from(
+        jsonResult['data'].map((model) => QuizHistory.jsonToObject(model)));
 
     return quizHistoryList;
   }
@@ -44,9 +45,9 @@ class Api{
   Future<void> saveQuizHistory(QuizHistory history) async {
     var url = Uri.parse('$_url/history');
     String historyJson = jsonEncode(history);
-    print('BODY: ${historyJson}');
 
     var response = await http.put(url, headers: headers, body: historyJson);
-    json.decode(response.body);
+    var result = json.decode(response.body);
+    print('RESULT: ${result}');
   }
 }

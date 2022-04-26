@@ -16,15 +16,6 @@ class QuizStore {
     prefs = await SharedPreferences.getInstance();
   }
 
-  Future<List<Quiz>> loadQuizListByCategoryAsync(int categoryId) async {
-    List<Quiz> quizList = [];
-    quizList = await JsonUtil.loadFromJsonAsync<Quiz>(
-        quizJsonFileName, Quiz.jsonToObject);
-    var categoryQuizList =
-        quizList.where((element) => element.categoryId == categoryId).toList();
-    return categoryQuizList;
-  }
-
   Future<List<QuizHistory>> loadQuizHistoryAsync() async {
     List<QuizHistory> quizHistoryList = [];
     var ifExists = QuizStore.prefs!.containsKey(quizHistoryListKey);
@@ -44,19 +35,6 @@ class QuizStore {
   Future<Category> getCategoryLocalAsync(int categoryId) async {
     List<Category> categoryList = categories;
     return categoryList.where((element) => element.id == categoryId).first;
-  }
-
-  Future<void> saveQuizHistory(QuizHistory history) async {
-    List<QuizHistory> historyList = await loadQuizHistoryAsync();
-    historyList.add(history);
-    String historyJson = jsonEncode(historyList);
-    prefs!.setString(quizHistoryListKey, historyJson);
-  }
-
-  Future<Quiz> getQuizByTitleAsync(String quizTitle, int categoryId) async {
-    var quizList = await loadQuizListByCategoryAsync(categoryId);
-    var quiz = quizList.where((element) => element.title == quizTitle).first;
-    return quiz;
   }
 
   static setName(String name) async {
