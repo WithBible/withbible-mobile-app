@@ -40,7 +40,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   _QuizScreenState(this.quiz) {
     store = QuizStore();
     api = Api();
-    engine = QuizEngine(quiz, onNextQuestion, onQuizComplete);
+    engine = QuizEngine(quiz, onPrevQuestion, onNextQuestion, onQuizCancel, onQuizComplete);
   }
 
   @override
@@ -182,10 +182,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
       children: [
         DiscoButton(
           onPressed: () {
-            setState(() {
-              engine.stop();
-            });
-            Navigator.pop(context);
+            engine.prev();
           },
           child: const Text(
             "Prev",
@@ -219,6 +216,24 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
         _optionSerial[i] = OptionSelection(String.fromCharCode(65 + i), false);
       }
     });
+  }
+
+  void onPrevQuestion(Question question){
+    setState(() {
+      this.question = question;
+      _optionSerial = {};
+
+      for (var i = 0; i < question.options.length; i++) {
+        _optionSerial[i] = OptionSelection(String.fromCharCode(65 + i), false);
+      }
+    });
+  }
+
+  void onQuizCancel(){
+    setState(() {
+      engine.stop();
+    });
+    Navigator.pop(context);
   }
 
   void onQuizComplete(Quiz quiz, double total, Duration takenTime) {

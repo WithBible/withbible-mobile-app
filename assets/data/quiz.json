@@ -89,6 +89,88 @@
     ]
   },
   {
+    "categoryId": 1,
+    "title": "모세오경 05",
+    "shuffleQuestions": true,
+    "questions": [
+      {
+        "text": "규가 유다를 떠나지 아니하며 통치자의 지팡이가 그 발 사이에서 떠나지 아니하기를 실로가 오시기까지 이르리니 그에게 모든 백성이 복종하리로다”(창 49:10) 이것은 야곱이 아들 누구에게 한 축복인가?",
+        "options": [
+          {
+            "code": "A",
+            "text": "르우벤",
+            "isCorrect": false
+          },
+          {
+            "code": "B",
+            "text": "베냐민",
+            "isCorrect": false
+          },
+          {
+            "code": "C",
+            "text": "유다",
+            "isCorrect": true
+          },
+          {
+            "code": "D",
+            "text": "요셉",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "시편은 총 몇 장으로 구성되어 있는가?",
+        "options": [
+          {
+            "code": "A",
+            "text": "90",
+            "isCorrect": false
+          },
+          {
+            "code": "B",
+            "text": "66",
+            "isCorrect": false
+          },
+          {
+            "code": "C",
+            "text": "50",
+            "isCorrect": false
+          },
+          {
+            "code": "D",
+            "text": "150",
+            "isCorrect": true
+          }
+        ]
+      },
+      {
+        "text": "사울 왕의 아들로써 다윗을 자기 생명처럼 사랑한 다윗의 친구는 누구인가?",
+        "options": [
+          {
+            "code": "A",
+            "text": "요나단",
+            "isCorrect": true
+          },
+          {
+            "code": "B",
+            "text": "요압",
+            "isCorrect": false
+          },
+          {
+            "code": "C",
+            "text": "므비보셋",
+            "isCorrect": false
+          },
+          {
+            "code": "D",
+            "text": "압살롬",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
     "categoryId": 2,
     "title": "역사서 01",
     "shuffleQuestions": true,
