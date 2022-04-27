@@ -40,15 +40,27 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: ThemeHelper.shadowColor,
+          leading: IconButton(
+            icon: const FaIcon(
+              FontAwesomeIcons.angleLeft,
+              color: Color(0xff8d5ac4),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: Container(
           decoration: BoxDecoration(color: ThemeHelper.shadowColor),
-          padding: const EdgeInsets.only(left: 10, right: 10),
+          padding: const EdgeInsets.all(16),
           alignment: Alignment.center,
           child: Column(
             children: [
-              screenHeader(),
               Expanded(
-                child: categoryDetailView(quizList),
+                child: buildCategoryDetails(quizList),
               ),
             ],
           ),
@@ -57,35 +69,12 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
     );
   }
 
-  Widget screenHeader() {
-    return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          GestureDetector(
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: const FaIcon(
-                FontAwesomeIcons.angleLeft,
-                color: Color(0xff8d5ac4),
-              ),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  categoryDetailView(List<Quiz> quizList) {
+  Widget buildCategoryDetails(List<Quiz> quizList) {
     return SingleChildScrollView(
       child: Column(
         children: quizList
             .map((quiz) => GestureDetector(
-                  child: categoryDetailItemView(quiz),
+                  child: buildCategoryDetailItem(quiz),
                   onTap: () {
                     Navigator.of(context).pushNamed("/quiz", arguments: quiz);
                   },
@@ -95,44 +84,19 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
     );
   }
 
-  categoryDetailsItemBadge(Quiz quiz) {
+  buildCategoryDetailItem(Quiz quiz) {
     return Container(
-      alignment: Alignment.topRight,
-      child: Container(
-        width: 150,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            color: ThemeHelper.accentColor,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(15),
-              bottomLeft: Radius.circular(15),
-            )),
-        child: Text(
-          "${quiz.questions.length} Questions",
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
-
-  categoryDetailItemView(Quiz quiz) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.only(bottom: 20),
       decoration: ThemeHelper.roundBoxDeco(),
+      margin: const EdgeInsets.only(bottom: 20),
+      alignment: Alignment.centerLeft,
       child: Stack(
         children: [
-          categoryDetailsItemBadge(quiz),
+          buildQuestionSizeBadge(quiz),
           Container(
             padding: const EdgeInsets.all(10),
             child: Row(
               children: [
-                Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  decoration: ThemeHelper.roundBoxDeco(
-                      color: ThemeHelper.accentColor, radius: 10),
-                  child: FaIcon(category.icon, color: Colors.white, size: 36),
-                ),
+                buildCategoryIcon(),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -152,6 +116,37 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  buildCategoryIcon() {
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      decoration: ThemeHelper.roundBoxDeco(
+        color: ThemeHelper.accentColor,
+        radius: 10,
+      ),
+      child: FaIcon(category.icon, color: Colors.white, size: 36),
+    );
+  }
+
+  buildQuestionSizeBadge(Quiz quiz) {
+    return Container(
+      alignment: Alignment.topRight,
+      child: Container(
+        width: 150,
+        decoration: BoxDecoration(
+            color: ThemeHelper.accentColor,
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(15),
+              bottomLeft: Radius.circular(15),
+            )),
+        alignment: Alignment.center,
+        child: Text(
+          "${quiz.questions.length} Questions",
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

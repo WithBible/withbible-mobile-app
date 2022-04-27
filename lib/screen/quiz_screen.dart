@@ -66,17 +66,33 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ThemeHelper.shadowColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: ThemeHelper.shadowColor,
+        leading: IconButton(
+          icon: const FaIcon(
+            FontAwesomeIcons.angleLeft,
+            color: Color(0xff8d5ac4),
+          ),
+          onPressed: () {
+            setState(() {
+              engine.stop();
+            });
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Container(
-        decoration: BoxDecoration(color: ThemeHelper.shadowColor),
-        padding: const EdgeInsets.only(left: 10, right: 10),
+        // decoration: BoxDecoration(color: ThemeHelper.shadowColor),
+        padding: const EdgeInsets.all(16),
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Column(
             children: [
-              screenHeader(),
-              quizQuestion(),
-              questionOptions(),
-              footerButton(),
+              buildQuizQuestion(),
+              buildOptions(),
+              buildFooter(),
             ],
           ),
         ),
@@ -84,19 +100,16 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     );
   }
 
-  Widget screenHeader() {
+  Widget buildHeader() {
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       alignment: Alignment.centerLeft,
       child: Row(
         children: [
           GestureDetector(
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: const FaIcon(
-                FontAwesomeIcons.angleLeft,
-                color: Color(0xff8d5ac4),
-              ),
+            child: const FaIcon(
+              FontAwesomeIcons.angleLeft,
+              color: Color(0xff8d5ac4),
             ),
             onTap: () {
               setState(() {
@@ -110,11 +123,11 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     );
   }
 
-  Widget quizQuestion() {
+  Widget buildQuizQuestion() {
     return Container(
-      alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.only(bottom: 10),
+      alignment: Alignment.centerLeft,
       decoration: ThemeHelper.roundBoxDeco(color: ThemeHelper.primaryColor),
       child: Text(
         question?.text ?? "",
@@ -123,18 +136,21 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     );
   }
 
-  Widget questionOptions() {
+  Widget buildOptions() {
     return Container(
       alignment: Alignment.center,
       decoration: ThemeHelper.roundBoxDeco(),
       child: Column(
-        children: List<Option>.from(question?.options ?? []).map((each) {
-          int optionIndex = question!.options.indexOf(each);
+        children: List<Option>.from(question?.options ?? []).map((option) {
+          int optionIndex = question!.options.indexOf(option);
+
           var optionWidget = GestureDetector(
             onTap: () {
               setState(() {
                 engine.updateAnswer(
-                    quiz.questions.indexOf(question!), optionIndex);
+                  quiz.questions.indexOf(question!),
+                  optionIndex,
+                );
 
                 for (int i = 0; i < _optionSerial.length; i++) {
                   _optionSerial[i]!.isSelected = false;
@@ -149,7 +165,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
             child: QuestionOptionsWidget(
               optionIndex,
               _optionSerial[optionIndex]!.optionText,
-              each.text,
+              option.text,
               isSelected: _optionSerial[optionIndex]!.isSelected,
             ),
           );
@@ -160,7 +176,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     );
   }
 
-  Widget footerButton() {
+  Widget buildFooter() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -172,8 +188,8 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
             Navigator.pop(context);
           },
           child: const Text(
-            "Cancel",
-            style: TextStyle(color: Color(0xff8d5ac4), fontSize: 20),
+            "Prev",
+            style: TextStyle(color: Color(0xfffbce7b), fontSize: 20),
           ),
           width: 130,
           height: 50,
