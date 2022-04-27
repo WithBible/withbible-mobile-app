@@ -11,17 +11,15 @@ final categories = <Category>[
   Category(
       id: 2,
       name: '역사서',
-      backgroundColor: ThemeHelper.primaryColor,
       icon: FontAwesomeIcons.landmark),
   Category(
       id: 3,
       name: '선지서',
-      backgroundColor: ThemeHelper.primaryColor,
+      backgroundColor: ThemeHelper.accentColor,
       icon: FontAwesomeIcons.handSparkles),
   Category(
       id: 4,
       name: '사복음서',
-      backgroundColor: ThemeHelper.accentColor,
       icon: FontAwesomeIcons.faceSmile),
   Category(
       id: 5,
@@ -31,6 +29,5 @@ final categories = <Category>[
   Category(
       id: 6,
       name: '요한계시록',
-      backgroundColor: ThemeHelper.primaryColor,
       icon: FontAwesomeIcons.personRays),
 ];

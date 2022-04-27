@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:withbible_app/screen/home_screen.dart';
+import 'package:withbible_app/widget/bottom_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/';
+
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -13,8 +14,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (ctx) => const HomeScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        // +++ Will replace login screen
+        builder: (ctx) => const BottomWidget(),
+      ));
     });
     super.initState();
   }

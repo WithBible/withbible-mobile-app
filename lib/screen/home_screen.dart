@@ -1,13 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:withbible_app/common/alert_util.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/data/categories.dart';
 import 'package:withbible_app/data/user.dart';
 import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
-import 'package:withbible_app/screen/quiz_history_screen.dart';
 import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/widget/category_header_widget.dart';
 
@@ -19,10 +14,11 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-class _HomeScreenState extends State<HomeScreen>{
 
+class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    // +++ Will handover from login screen
     QuizStore.setName(name);
     super.initState();
   }
@@ -32,9 +28,9 @@ class _HomeScreenState extends State<HomeScreen>{
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text('성경 졸업고사 퀴즈'),
+        title: const Text('위드 바이블'),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(80),
+          preferredSize: const Size.fromHeight(50),
           child: Container(
             padding: const EdgeInsets.all(16),
             alignment: Alignment.centerLeft,
@@ -46,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen>{
           SizedBox(width: 12),
         ],
       ),
-      drawer: navigationDrawer(context),
       body: Container(
         decoration: BoxDecoration(color: ThemeHelper.shadowColor),
         child: ListView(
@@ -65,18 +60,18 @@ class _HomeScreenState extends State<HomeScreen>{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Hello',
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
         Text(
-          name,
+          '$name님',
           style: const TextStyle(
-            fontSize: 24,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
-        )
+        ),
+        const Text(
+          '성경 졸업고사 패스를 기원합니다!',
+          style: TextStyle(fontSize: 12, color: Colors.white),
+        ),
       ],
     );
   }
@@ -86,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen>{
       height: 400,
       child: GridView(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+          crossAxisCount: 3,
           childAspectRatio: 4 / 3,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
@@ -103,54 +98,5 @@ class _HomeScreenState extends State<HomeScreen>{
             .toList(),
       ),
     );
-  }
-
-  Drawer navigationDrawer(BuildContext context) {
-    return Drawer(
-        child: ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        DrawerHeader(
-          decoration: BoxDecoration(color: ThemeHelper.accentColor),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                "Version: 1.00",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ],
-          ),
-        ),
-        ListTile(
-            title: const Text('Home'),
-            onTap: () {
-              Navigator.pop(context);
-            }),
-        ListTile(
-          title: const Text('Quiz History'),
-          onTap: () {
-            Navigator.pushNamed(context, QuizHistoryScreen.routeName);
-          },
-        ),
-        const Divider(
-          thickness: 2,
-        ),
-        ListTile(
-            title: const Text('About'),
-            onTap: () {
-              AlertUtil.showAlert(context, "About us", "More at ...");
-            }),
-        ListTile(
-            title: const Text('Exit'),
-            onTap: () {
-              if (Platform.isAndroid) {
-                SystemNavigator.pop();
-              } else if (Platform.isIOS) {
-                exit(0);
-              }
-            })
-      ],
-    ));
   }
 }
