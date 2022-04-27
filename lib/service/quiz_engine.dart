@@ -1,11 +1,12 @@
 import 'dart:math';
 import 'package:stack/stack.dart';
+import 'package:withbible_app/model/option.dart';
 
 import 'package:withbible_app/model/question.dart';
 import 'package:withbible_app/model/quiz.dart';
 
-typedef OnQuizPrev = void Function(Question question);
-typedef OnQuizNext = void Function(Question question);
+typedef OnQuizPrev = void Function(Question question, String prevSelectCode);
+typedef OnQuizNext = void Function(Question question, String prevSelectCode);
 typedef OnQuizCancel = void Function();
 typedef OnQuizCompleted = void Function(
     Quiz quiz, double totalCorrect, Duration takenTime);
@@ -16,7 +17,7 @@ class QuizEngine {
   bool takeNewQuestion = true;
   DateTime quizStartTime = DateTime.now();
 
-  Map<int, bool> questionAnswer = {};
+  Map<int, Option> questionAnswer = {};
   Stack<int> takenQuestions = Stack();
 
   Quiz quiz;
@@ -46,27 +47,38 @@ class QuizEngine {
       quizStartTime = DateTime.now();
 
       do {
-        print(takenQuestions.length);
-
         if (takePrevQuestion) {
-          int prevIndex = takenQuestions.pop();
-          question = quiz.questions[prevIndex];
+          takenQuestions.pop();
 
-          takePrevQuestion = false;
-          onPrev(question);
+          if (takenQuestions.isEmpty) {
+            onCancel();
+          } else {
+            int prevIndex = takenQuestions.top();
+            question = quiz.questions[prevIndex];
+
+            if (questionAnswer[prevIndex] != null) {
+              onPrev(question, questionAnswer[prevIndex]!.code);
+            } else {
+              onPrev(question, "I NEED OVERLOADING!");
+            }
+
+            takePrevQuestion = false;
+          }
         }
 
         if (takeNewQuestion) {
           question = _selectNextQuestion(quiz);
+          int curIndex = takenQuestions.top();
 
           if (question != null) {
-            takeNewQuestion = false;
-            onNext(question);
-          }
-        }
+            if (questionAnswer[curIndex] != null) {
+              onNext(question, questionAnswer[curIndex]!.code);
+            } else {
+              onNext(question, "I NEED OVERLOADING!");
+            }
 
-        if (takenQuestions.length <= 0) {
-          onCancel();
+            takeNewQuestion = false;
+          }
         }
 
         if (question == null ||
@@ -74,7 +86,7 @@ class QuizEngine {
           double totalCorrect = 0.0;
 
           questionAnswer.forEach((key, value) {
-            if (value == true) {
+            if (value.isCorrect == true) {
               totalCorrect++;
             }
           });
@@ -106,7 +118,7 @@ class QuizEngine {
 
   void updateAnswer(int questionIndex, int answer) {
     var question = quiz.questions[questionIndex];
-    questionAnswer[questionIndex] = question.options[answer].isCorrect;
+    questionAnswer[questionIndex] = question.options[answer];
   }
 
   Question? _selectNextQuestion(Quiz quiz) {

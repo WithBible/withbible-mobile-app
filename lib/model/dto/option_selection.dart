@@ -1,6 +1,6 @@
 class OptionSelection {
-  bool isSelected;
   String optionText;
+  bool isSelected;
 
   OptionSelection(this.optionText, this.isSelected);
 }

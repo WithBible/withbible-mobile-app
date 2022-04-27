@@ -40,7 +40,8 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   _QuizScreenState(this.quiz) {
     store = QuizStore();
     api = Api();
-    engine = QuizEngine(quiz, onPrevQuestion, onNextQuestion, onQuizCancel, onQuizComplete);
+    engine = QuizEngine(
+        quiz, onPrevQuestion, onNextQuestion, onQuizCancel, onQuizComplete);
   }
 
   @override
@@ -207,29 +208,41 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     );
   }
 
-  void onNextQuestion(Question question) {
+  void onNextQuestion(Question question, String prevSelectCode) {
     setState(() {
       this.question = question;
       _optionSerial = {};
 
       for (var i = 0; i < question.options.length; i++) {
-        _optionSerial[i] = OptionSelection(String.fromCharCode(65 + i), false);
+        String code = String.fromCharCode(65 + i);
+
+        if (code == prevSelectCode) {
+          _optionSerial[i] = OptionSelection(prevSelectCode, true);
+          continue;
+        }
+        _optionSerial[i] = OptionSelection(code, false);
       }
     });
   }
 
-  void onPrevQuestion(Question question){
+  void onPrevQuestion(Question question, String prevSelectCode) {
     setState(() {
       this.question = question;
       _optionSerial = {};
 
       for (var i = 0; i < question.options.length; i++) {
-        _optionSerial[i] = OptionSelection(String.fromCharCode(65 + i), false);
+        String code = String.fromCharCode(65 + i);
+
+        if (code == prevSelectCode) {
+          _optionSerial[i] = OptionSelection(prevSelectCode, true);
+          continue;
+        }
+        _optionSerial[i] = OptionSelection(code, false);
       }
     });
   }
 
-  void onQuizCancel(){
+  void onQuizCancel() {
     setState(() {
       engine.stop();
     });
