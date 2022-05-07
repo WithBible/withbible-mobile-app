@@ -8,8 +8,8 @@ import 'package:withbible_app/model/quiz.dart';
 typedef OnQuizPrev = void Function(Question question, String prevSelectCode);
 typedef OnQuizNext = void Function(Question question, String prevSelectCode);
 typedef OnQuizCancel = void Function();
-typedef OnQuizCompleted = void Function(
-    Quiz quiz, double totalCorrect, Duration takenTime);
+typedef OnQuizCompleted = void Function(Quiz quiz, double totalCorrect,
+    Duration takenTime, List<String> answerSheet);
 
 class QuizEngine {
   bool isRunning = false;
@@ -18,6 +18,7 @@ class QuizEngine {
   DateTime quizStartTime = DateTime.now();
 
   Map<int, Option> questionAnswer = {};
+  late List<String> answerSheet;
   Stack<int> takenQuestions = Stack();
 
   Quiz quiz;
@@ -41,6 +42,7 @@ class QuizEngine {
 
     takenQuestions = Stack();
     questionAnswer = {};
+    answerSheet = List<String>.filled(quiz.questions.length, '');
 
     Future.doWhile(() async {
       Question? question;
@@ -86,12 +88,16 @@ class QuizEngine {
           double totalCorrect = 0.0;
 
           questionAnswer.forEach((key, value) {
+            answerSheet[key] = value.code;
+
             if (value.isCorrect == true) {
               totalCorrect++;
             }
           });
+
+          print(answerSheet);
           var takenTime = quizStartTime.difference(DateTime.now());
-          onCompleted(quiz, totalCorrect, takenTime);
+          onCompleted(quiz, totalCorrect, takenTime, answerSheet);
         }
 
         await Future.delayed(const Duration(milliseconds: 500));

@@ -42,12 +42,31 @@ class Api {
     return quizHistoryList;
   }
 
+  Future<QuizHistory?> loadQuizHistoryByTitleAsync(String title) async {
+    String name = await QuizStore.getName('name');
+    var url = Uri.parse('$_url/history?name=$name&title=$title');
+    var response = await http.get(url, headers: headers);
+
+    // +++ Need controller?
+    if(response.statusCode == 500){
+      return null;
+    }
+
+    var jsonResult = json.decode(response.body);
+    return QuizHistory.jsonToObject(jsonResult['data'].first);
+  }
+
   Future<void> saveQuizHistory(QuizHistory history) async {
     var url = Uri.parse('$_url/history');
     String historyJson = jsonEncode(history);
 
-    var response = await http.put(url, headers: headers, body: historyJson);
-    var result = json.decode(response.body);
-    print('RESULT: ${result}');
+    await http.put(url, headers: headers, body: historyJson);
+  }
+
+  Future<void> updateQuizHistory(QuizHistory history) async {
+    var url = Uri.parse('$_url/history');
+    String historyJson = jsonEncode(history);
+
+    await http.post(url, headers: headers, body: historyJson);
   }
 }

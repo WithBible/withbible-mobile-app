@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/extensions.dart';
-import 'package:withbible_app/model/category.dart';
 import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/dto/option_selection.dart';
@@ -249,29 +249,42 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     Navigator.pop(context);
   }
 
-  void onQuizComplete(Quiz quiz, double total, Duration takenTime) {
+  void onQuizComplete(
+      Quiz quiz, double total, Duration takenTime, List<String> answerSheet) {
     Future nameFuture = QuizStore.getName('name');
     Future categoryFuture = store.getCategoryLocalAsync(quiz.categoryId);
+    Future historyFuture = api.loadQuizHistoryByTitleAsync(quiz.title);
 
-    Future.wait([nameFuture, categoryFuture]).then((value) {
+    Future.wait([nameFuture, categoryFuture, historyFuture]).then((value) {
       String name = value[0];
-      Category category = value[1];
+      int categoryId = value[1].id;
+      String? score = value[2]?.score;
 
-      // +++ loadQuizHistoryAsync
-      // +++ match quiz title
-      // +++ condition
-
-      api.saveQuizHistory(
-        QuizHistory(
-          name,
-          category.id,
-          quiz.title,
-          "$total/${quiz.questions.length}",
-          takenTime.format(),
-          DateFormat.yMEd().add_jms().format(DateTime.now()),
-          "Complete",
-        ),
-      );
+      score == null
+          ? api.saveQuizHistory(
+              QuizHistory(
+                name,
+                categoryId,
+                quiz.title,
+                answerSheet,
+                "$total/${quiz.questions.length}",
+                takenTime.format(),
+                DateFormat.yMEd().add_jms().format(DateTime.now()),
+                "Complete",
+              ),
+            )
+          : api.updateQuizHistory(
+              QuizHistory(
+                name,
+                categoryId,
+                quiz.title,
+                answerSheet,
+                "$total/${quiz.questions.length}",
+                takenTime.format(),
+                DateFormat.yMEd().add_jms().format(DateTime.now()),
+                "Complete",
+              ),
+            );
 
       // +++ Need inside then after saveQuizHistory
       Navigator.pushReplacementNamed(
