@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/quiz_history.dart';
-import 'package:withbible_app/screen/quiz_screen.dart';
+import 'package:withbible_app/screen/review_screen.dart';
 import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/widget/disco_button.dart';
 
@@ -26,7 +26,7 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
     store = QuizStore();
     api = Api();
 
-    api.loadQuizHistoryAsync().then((value){
+    api.loadQuizHistoryAsync().then((value) {
       setState(() {
         quizHistoryList = value;
       });
@@ -137,11 +137,11 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
                         .getQuizByTitleAsync(quiz.title, quiz.categoryId)
                         .then((value) {
                       Navigator.pushReplacementNamed(
-                          context, QuizScreen.routeName,
+                          context, ReviewScreen.routeName,
                           arguments: value);
                     });
                   },
-                  child: const Text("Start Again")),
+                  child: const Text("Review")),
             ],
           )
         ],

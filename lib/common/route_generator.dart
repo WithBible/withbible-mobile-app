@@ -8,6 +8,7 @@ import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
 import 'package:withbible_app/screen/quiz_history_screen.dart';
 import 'package:withbible_app/screen/quiz_result_screen.dart';
 import 'package:withbible_app/screen/quiz_screen.dart';
+import 'package:withbible_app/screen/review_screen.dart';
 import 'package:withbible_app/screen/splash_screen.dart';
 import 'package:withbible_app/widget/bottom_widget.dart';
 
@@ -42,6 +43,13 @@ class RouteGenerator {
         if (args is Category) {
           return MaterialPageRoute(
               builder: (_) => QuizCategoryDetailScreen(args));
+        }
+        return _errorRoute();
+      case ReviewScreen.routeName:
+        if (args is Quiz) {
+          return MaterialPageRoute(
+            builder: (_) => ReviewScreen(args),
+          );
         }
         return _errorRoute();
       default:
