@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:stack/stack.dart';
 import 'package:withbible_app/model/option.dart';
-
 import 'package:withbible_app/model/question.dart';
 import 'package:withbible_app/model/quiz.dart';
 
@@ -95,7 +94,6 @@ class QuizEngine {
             }
           });
 
-          print(answerSheet);
           var takenTime = quizStartTime.difference(DateTime.now());
           onCompleted(quiz, totalCorrect, takenTime, answerSheet);
         }

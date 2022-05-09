@@ -2,7 +2,7 @@ class QuizHistory {
   String name = "";
   int categoryId = 0;
   String title = "";
-  List<String> answerSheet = [];
+  late List<String> answerSheet;
   String score = "";
   String timeTaken = "";
   String date = "";
@@ -12,11 +12,15 @@ class QuizHistory {
       this.score, this.timeTaken, this.date, this.status);
 
   static jsonToObject(dynamic json) {
+    List<String> answerSheetList = [];
+    answerSheetList =
+        List<String>.from(json["answerSheet"].map((x) => x.toString()));
+
     return QuizHistory(
       json["name"],
       json["categoryId"],
       json["title"],
-      json["answerSheet"],
+      answerSheetList,
       json["score"],
       json["timeTaken"],
       json["date"],
