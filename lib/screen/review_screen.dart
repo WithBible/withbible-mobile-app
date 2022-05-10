@@ -19,7 +19,6 @@ class ReviewScreen extends StatefulWidget {
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
-  late PageController controller;
   late Api api;
   late Quiz quiz;
   Question? question;
@@ -28,12 +27,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
   _ReviewScreenState(this.quiz) {
     quiz = quiz;
-    question = quiz.questions.first;
   }
 
   @override
   void initState() {
-    controller = PageController();
     api = Api();
 
     api.loadQuizHistoryByTitleAsync(quiz.title).then((value) {
@@ -42,11 +39,15 @@ class _ReviewScreenState extends State<ReviewScreen> {
         questionAnswer = answerSheet.first;
       });
     });
+
+    question = quiz.questions.first;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    const double padding = 16;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -63,17 +64,17 @@ class _ReviewScreenState extends State<ReviewScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(80),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: padding),
             child: QuestionNumbersWidget(
               questions: quiz.questions,
-              question: quiz.questions.first,
-              onClickedNumber: (index) => nextQuestion(index, jump: true),
+              question: question,
+              onClickedNumber: (index) => nextQuestion(index),
             ),
           ),
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(padding),
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Column(
@@ -121,14 +122,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
     );
   }
 
-  void nextQuestion(int index, {bool jump = false}) {
+  void nextQuestion(int index) {
     setState(() {
       question = quiz.questions[index];
       questionAnswer = answerSheet[index];
     });
-
-    if (jump) {
-      controller.jumpToPage(index);
-    }
   }
 }

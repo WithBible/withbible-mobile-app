@@ -4,7 +4,7 @@ import 'package:withbible_app/model/question.dart';
 
 class QuestionNumbersWidget extends StatelessWidget {
   final List<Question> questions;
-  final Question question;
+  final Question? question;
   final ValueChanged<int> onClickedNumber;
 
   const QuestionNumbersWidget({
@@ -40,18 +40,19 @@ class QuestionNumbersWidget extends StatelessWidget {
     final color = isSelected ? ThemeHelper.primaryColor : Colors.white;
 
     return GestureDetector(
-        onTap: () => onClickedNumber(index),
-        child: CircleAvatar(
-          backgroundColor: color,
-          child: Text(
-            '${index + 1}',
-            style: TextStyle(
-                color: isSelected
-                    ? Colors.white
-                    : Theme.of(context).colorScheme.secondary,
-                fontWeight: FontWeight.bold,
-                fontSize: 18),
-          ),
-        ));
+      onTap: () => onClickedNumber(index),
+      child: CircleAvatar(
+        backgroundColor: color,
+        child: Text(
+          '${index + 1}',
+          style: TextStyle(
+              color: isSelected
+                  ? Colors.white
+                  : Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.bold,
+              fontSize: 18),
+        ),
+      ),
+    );
   }
 }
