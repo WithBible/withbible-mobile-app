@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:developer';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:withbible_app/api/api.dart';
@@ -85,7 +84,6 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
         ),
       ),
       body: Container(
-        // decoration: BoxDecoration(color: ThemeHelper.shadowColor),
         padding: const EdgeInsets.all(16),
         alignment: Alignment.center,
         child: SingleChildScrollView(
@@ -97,29 +95,6 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildHeader() {
-    return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          GestureDetector(
-            child: const FaIcon(
-              FontAwesomeIcons.angleLeft,
-              color: Color(0xff8d5ac4),
-            ),
-            onTap: () {
-              setState(() {
-                engine.stop();
-              });
-              Navigator.pop(context);
-            },
-          ),
-        ],
       ),
     );
   }
@@ -165,7 +140,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
             },
             child: QuestionOptionsWidget(
               optionIndex,
-              _optionSerial[optionIndex]!.optionText,
+              _optionSerial[optionIndex]!.code,
               option.text,
               isSelected: _optionSerial[optionIndex]!.isSelected,
             ),
@@ -286,7 +261,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
               ),
             );
 
-      // +++ Need inside then after saveQuizHistory
+      // TODO: Need inside then after saveQuizHistory
       Navigator.pushReplacementNamed(
         context,
         QuizResultScreen.routeName,

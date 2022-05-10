@@ -135,10 +135,11 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
                   onPressed: () {
                     api
                         .getQuizByTitleAsync(quiz.title, quiz.categoryId)
-                        .then((value) {
-                      Navigator.pushReplacementNamed(
-                          context, ReviewScreen.routeName,
-                          arguments: value);
+                        .then((quiz) {
+                      Navigator.of(context).pushNamed(
+                        ReviewScreen.routeName,
+                        arguments: quiz,
+                      );
                     });
                   },
                   child: const Text("Review")),

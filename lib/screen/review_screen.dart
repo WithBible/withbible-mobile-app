@@ -62,7 +62,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
           },
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(80),
+          preferredSize: const Size.fromHeight(50),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: padding),
             child: QuestionNumbersWidget(
@@ -74,6 +74,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
         ),
       ),
       body: Container(
+        decoration: BoxDecoration(color: ThemeHelper.shadowColor),
         padding: const EdgeInsets.all(padding),
         alignment: Alignment.center,
         child: SingleChildScrollView(
@@ -108,12 +109,15 @@ class _ReviewScreenState extends State<ReviewScreen> {
       child: Column(
         children: List<Option>.from(question?.options ?? []).map((option) {
           int optionIndex = question!.options.indexOf(option);
+          final isSelected = option.code == questionAnswer;
+          final reviewColor = getColorForOption(option, isSelected);
 
           var optionWidget = QuestionOptionsWidget(
             optionIndex,
             option.code,
             option.text,
-            isSelected: option.code == questionAnswer,
+            isSelected: isSelected,
+            reviewColor: reviewColor,
           );
 
           return optionWidget;
@@ -127,5 +131,13 @@ class _ReviewScreenState extends State<ReviewScreen> {
       question = quiz.questions[index];
       questionAnswer = answerSheet[index];
     });
+  }
+
+  Color getColorForOption(Option option, isSelected) {
+    return isSelected
+        ? option.isCorrect
+            ? Colors.green
+            : Colors.red
+        : Colors.white;
   }
 }
