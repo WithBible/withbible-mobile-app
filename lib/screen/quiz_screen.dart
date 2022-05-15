@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/extensions.dart';
+import 'package:withbible_app/controller/quiz_history.dart';
 import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/dto/option_selection.dart';
@@ -29,7 +29,6 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   late QuizEngine engine;
   late QuizStore store;
-  late Api api;
   late Quiz quiz;
   Question? question;
   AppLifecycleState? state;
@@ -38,7 +37,6 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
 
   _QuizScreenState(this.quiz) {
     store = QuizStore();
-    api = Api();
     engine = QuizEngine(
         quiz, onPrevQuestion, onNextQuestion, onQuizCancel, onQuizComplete);
   }
@@ -228,7 +226,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
       Quiz quiz, double total, Duration takenTime, List<String> answerSheet) {
     Future nameFuture = QuizStore.getName('name');
     Future categoryFuture = store.getCategoryLocalAsync(quiz.categoryId);
-    Future historyFuture = api.loadQuizHistoryByTitleAsync(quiz.title);
+    Future historyFuture = loadQuizHistoryByTitle(quiz.title);
 
     Future.wait([nameFuture, categoryFuture, historyFuture]).then((value) {
       String name = value[0];
@@ -236,7 +234,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
       String? score = value[2]?.score;
 
       score == null
-          ? api.saveQuizHistory(
+          ? saveQuizHistory(
               QuizHistory(
                 name,
                 categoryId,
@@ -248,7 +246,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                 "Complete",
               ),
             )
-          : api.updateQuizHistory(
+          : updateQuizHistory(
               QuizHistory(
                 name,
                 categoryId,

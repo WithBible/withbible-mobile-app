@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/theme_helper.dart';
+import 'package:withbible_app/controller/quiz.dart';
 import 'package:withbible_app/model/category.dart';
 import 'package:withbible_app/model/quiz.dart';
+import 'package:withbible_app/screen/quiz_screen.dart';
 
 class QuizCategoryDetailScreen extends StatefulWidget {
   static const routeName = '/categoryDetail';
@@ -18,7 +19,6 @@ class QuizCategoryDetailScreen extends StatefulWidget {
 
 class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
   late Category category;
-  late Api api;
 
   _QuizCategoryDetailScreenState(this.category);
 
@@ -26,8 +26,7 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
 
   @override
   void initState() {
-    api = Api();
-    api.loadQuizListByCategoryAsync(category.id).then((value) {
+    loadQuizListByCategory(category.id).then((value) {
       setState(() {
         quizList = value;
       });
@@ -76,7 +75,10 @@ class _QuizCategoryDetailScreenState extends State<QuizCategoryDetailScreen> {
             .map((quiz) => GestureDetector(
                   child: buildCategoryDetailItem(quiz),
                   onTap: () {
-                    Navigator.of(context).pushNamed("/quiz", arguments: quiz);
+                    Navigator.of(context).pushNamed(
+                      QuizScreen.routeName,
+                      arguments: quiz,
+                    );
                   },
                 ))
             .toList(),

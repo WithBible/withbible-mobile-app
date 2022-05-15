@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/theme_helper.dart';
+import 'package:withbible_app/controller/quiz_history.dart';
 import 'package:withbible_app/model/option.dart';
 import 'package:withbible_app/model/question.dart';
 import 'package:withbible_app/model/quiz.dart';
@@ -19,7 +19,6 @@ class ReviewScreen extends StatefulWidget {
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
-  late Api api;
   late Quiz quiz;
   Question? question;
   String questionAnswer = '';
@@ -31,9 +30,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
   @override
   void initState() {
-    api = Api();
-
-    api.loadQuizHistoryByTitleAsync(quiz.title).then((value) {
+    loadQuizHistoryByTitle(quiz.title).then((value) {
       setState(() {
         answerSheet = value!.answerSheet;
         questionAnswer = answerSheet.first;

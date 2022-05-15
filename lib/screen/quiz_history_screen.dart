@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:withbible_app/api/api.dart';
 import 'package:withbible_app/common/theme_helper.dart';
+import 'package:withbible_app/controller/quiz.dart';
+import 'package:withbible_app/controller/quiz_history.dart';
 import 'package:withbible_app/model/quiz_history.dart';
 import 'package:withbible_app/screen/review_screen.dart';
 import 'package:withbible_app/store/quiz_store.dart';
@@ -19,14 +20,11 @@ class QuizHistoryScreen extends StatefulWidget {
 class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
   List<QuizHistory> quizHistoryList = [];
   late QuizStore store;
-  late Api api;
 
   @override
   void initState() {
     store = QuizStore();
-    api = Api();
-
-    api.loadQuizHistoryAsync().then((value) {
+    loadQuizHistory().then((value) {
       setState(() {
         quizHistoryList = value;
       });
@@ -63,15 +61,18 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
     );
   }
 
+  // TODO: Need after quiz, No need before quiz
   Widget screenHeader() {
+    const double margin = 10;
+
     return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.only(top: margin, bottom: margin),
       alignment: Alignment.centerLeft,
       child: Row(
         children: [
           GestureDetector(
             child: Container(
-              margin: const EdgeInsets.only(right: 10),
+              margin: const EdgeInsets.only(right: margin),
               child: const FaIcon(
                 FontAwesomeIcons.angleLeft,
                 color: Color(0xff8d5ac4),
@@ -133,9 +134,7 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
                   width: 100,
                   height: 50,
                   onPressed: () {
-                    api
-                        .getQuizByTitleAsync(quiz.title, quiz.categoryId)
-                        .then((quiz) {
+                    getQuizByTitle(quiz.title, quiz.categoryId).then((quiz) {
                       Navigator.of(context).pushNamed(
                         ReviewScreen.routeName,
                         arguments: quiz,
