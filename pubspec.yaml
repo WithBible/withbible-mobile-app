@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.17.0
   http: ^0.13.4
   stack: ^0.2.1
+  confetti: ^0.6.0
 
 dev_dependencies:
   flutter_test:

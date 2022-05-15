@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:confetti/confetti.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/quiz_result.dart';
 import 'package:withbible_app/screen/quiz_history_screen.dart';
@@ -15,20 +17,31 @@ class QuizResultScreen extends StatefulWidget {
   _QuizResultScreenState createState() => _QuizResultScreenState(this.result);
 }
 
-class _QuizResultScreenState extends State<QuizResultScreen>{
+class _QuizResultScreenState extends State<QuizResultScreen> {
   QuizResult result;
   int totalQuestions = 0;
   double totalCorrect = 0;
+  late ConfettiController _confettiController;
 
   _QuizResultScreenState(this.result);
 
   @override
   void initState() {
+    super.initState();
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 10));
+    _confettiController.play();
+
     setState(() {
       totalCorrect = result.totalCorrect;
       totalQuestions = result.quiz.questions.length;
     });
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
   }
 
   @override
@@ -40,6 +53,19 @@ class _QuizResultScreenState extends State<QuizResultScreen>{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Align(
+              alignment: Alignment.center,
+              child: ConfettiWidget(
+                confettiController: _confettiController,
+                blastDirectionality: BlastDirectionality.explosive,
+                shouldLoop: true,
+                colors: const [
+                  Color(0xfffbce7b),
+                  Color(0xff8d5ac4),
+                ],
+                createParticlePath: drawStar,
+              ),
+            ),
             quizResultInfo(result),
             bottomButtons(),
           ],
@@ -49,6 +75,10 @@ class _QuizResultScreenState extends State<QuizResultScreen>{
   }
 
   Widget bottomButtons() {
+    const double width = 150;
+    const double height = 50;
+    const double fontSize = 20;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: Row(
@@ -60,21 +90,22 @@ class _QuizResultScreenState extends State<QuizResultScreen>{
             },
             child: const Text(
               "Close",
-              style: TextStyle(color: Color(0xff8d5ac4), fontSize: 20),
+              style: TextStyle(color: Color(0xff8d5ac4), fontSize: fontSize),
             ),
-            width: 150,
-            height: 50,
+            width: width,
+            height: height,
           ),
           DiscoButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, QuizHistoryScreen.routeName);
+              Navigator.pushReplacementNamed(
+                  context, QuizHistoryScreen.routeName);
             },
             child: const Text(
               "History",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: Colors.white, fontSize: fontSize),
             ),
-            width: 150,
-            height: 50,
+            width: width,
+            height: height,
             isActive: true,
           ),
         ],
@@ -99,5 +130,28 @@ class _QuizResultScreenState extends State<QuizResultScreen>{
         ),
       ],
     );
+  }
+
+  Path drawStar(Size size) {
+    double degToRad(double deg) => deg * (pi / 180.0);
+
+    const numberOfPoints = 5;
+    final halfWidth = size.width / 2;
+    final externalRadius = halfWidth;
+    final internalRadius = halfWidth / 2.5;
+    final degreesPerStep = degToRad(360 / numberOfPoints);
+    final halfDegreesPerStep = degreesPerStep / 2;
+    final path = Path();
+    final fullAngle = degToRad(360);
+    path.moveTo(size.width, halfWidth);
+
+    for (double step = 0; step < fullAngle; step += degreesPerStep) {
+      path.lineTo(halfWidth + externalRadius * cos(step),
+          halfWidth + externalRadius * sin(step));
+      path.lineTo(halfWidth + internalRadius * cos(step + halfDegreesPerStep),
+          halfWidth + internalRadius * sin(step + halfDegreesPerStep));
+    }
+    path.close();
+    return path;
   }
 }
