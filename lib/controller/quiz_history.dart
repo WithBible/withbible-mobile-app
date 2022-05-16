@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:withbible_app/controller/api.dart';
 import 'package:withbible_app/model/leader_board.dart';
@@ -51,7 +52,8 @@ Future<List<LeaderBoard>> loadLeaderBoard() async {
   var jsonResult = json.decode(response.body);
 
   List<LeaderBoard> leaderBoardList = List<LeaderBoard>.from(
-      jsonResult['data'].map((model) => LeaderBoard.jsonToObject(model)));
+    jsonResult['data'].map((model) => LeaderBoard.jsonToObject(model)),
+  );
 
   return leaderBoardList;
 }
