@@ -26,7 +26,7 @@ class QuizScreen extends StatefulWidget {
   _QuizScreenState createState() => _QuizScreenState(quiz);
 }
 
-class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
+class _QuizScreenState extends State<QuizScreen> {
   late QuizEngine engine;
   late QuizStore store;
   late Quiz quiz;
@@ -45,19 +45,11 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   void initState() {
     engine.start();
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    this.state = state;
   }
 
   @override
   void dispose() {
     engine.stop();
-    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -223,7 +215,11 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   }
 
   void onQuizComplete(
-      Quiz quiz, double total, Duration takenTime, List<String> answerSheet) {
+    Quiz quiz,
+    double total,
+    Duration takenTime,
+    List<String> answerSheet,
+  ) {
     Future nameFuture = QuizStore.getName('name');
     Future categoryFuture = store.getCategoryLocalAsync(quiz.categoryId);
     Future historyFuture = loadQuizHistoryByTitle(quiz.title);
@@ -232,39 +228,33 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
       String name = value[0];
       int categoryId = value[1].id;
       String? score = value[2]?.score;
+      String status = getStatus(total, quiz.questions.length);
+
+      QuizHistory quizHistory = QuizHistory(
+        name,
+        categoryId,
+        quiz.title,
+        answerSheet,
+        "$total/${quiz.questions.length}",
+        takenTime.format(),
+        DateFormat.yMEd().add_jms().format(DateTime.now()),
+        status,
+      );
 
       score == null
-          ? saveQuizHistory(
-              QuizHistory(
-                name,
-                categoryId,
-                quiz.title,
-                answerSheet,
-                "$total/${quiz.questions.length}",
-                takenTime.format(),
-                DateFormat.yMEd().add_jms().format(DateTime.now()),
-                "Complete",
-              ),
-            )
-          : updateQuizHistory(
-              QuizHistory(
-                name,
-                categoryId,
-                quiz.title,
-                answerSheet,
-                "$total/${quiz.questions.length}",
-                takenTime.format(),
-                DateFormat.yMEd().add_jms().format(DateTime.now()),
-                "Complete",
-              ),
-            );
+          ? saveQuizHistory(quizHistory)
+          : saveQuizHistory(quizHistory, isNew: false);
+    }).whenComplete(() => {
+          // TODO: This widget has been unmounted, so the State no longer has a context
+          Navigator.pushReplacementNamed(
+            context,
+            QuizResultScreen.routeName,
+            arguments: QuizResult(quiz, total),
+          )
+        });
+  }
 
-      // TODO: Need inside then after saveQuizHistory
-      Navigator.pushReplacementNamed(
-        context,
-        QuizResultScreen.routeName,
-        arguments: QuizResult(quiz, total),
-      );
-    });
+  String getStatus(double totalCorrect, int questionsLength) {
+    return totalCorrect == questionsLength ? "Score" : "Complete";
   }
 }
