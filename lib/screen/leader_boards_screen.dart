@@ -4,6 +4,7 @@ import 'package:withbible_app/controller/quiz_history.dart';
 import 'package:withbible_app/model/leader_board.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+// TODO: Need check didExceedMaxLines
 class LeaderBoardsScreen extends StatefulWidget {
   const LeaderBoardsScreen({Key? key}) : super(key: key);
 
@@ -22,13 +23,13 @@ class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: const Text('리더보드'),
-      ),
-      body: SafeArea(
-        child: Container(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text('리더보드'),
+        ),
+        body: Container(
           decoration: BoxDecoration(color: ThemeHelper.shadowColor),
           padding: const EdgeInsets.all(16),
           child: FutureBuilder(
@@ -69,6 +70,7 @@ class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
   }
 
   Widget buildTopLeaderBoardItem(List<LeaderBoard>? data) {
+    // TODO: When multiple leader?
     const int index = 0;
 
     return Align(
@@ -80,15 +82,19 @@ class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
               Center(
                 child: buildLeaderBoardSizeBadge(data![index].photoPath),
               ),
-              const Center(
-                  child: Padding(
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  '1',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                  textAlign: TextAlign.center,
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 70),
+                  child: const Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Text(
+                      '✨ 1 ✨',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-              ))
+              )
             ],
           ),
           Row(
@@ -99,7 +105,7 @@ class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
               ),
               const Spacer(),
               Text(
-                '✨ ${data[index].score} ✨',
+                '${data[index].score}',
                 style: const TextStyle(color: Colors.white, fontSize: 24),
               ),
             ],
@@ -125,7 +131,7 @@ class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
         ),
         const Spacer(),
         Text(
-          data[index].score,
+          data[index].score.toString(),
           style: const TextStyle(color: Colors.black, fontSize: 14),
         ),
       ],

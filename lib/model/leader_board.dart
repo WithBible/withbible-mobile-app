@@ -2,7 +2,7 @@ class LeaderBoard {
   String name;
   String username;
   String photoPath;
-  String score;
+  int score;
 
   LeaderBoard(this.name, this.username, this.photoPath, this.score);
 
