@@ -4,7 +4,7 @@ import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/controller/quiz.dart';
 import 'package:withbible_app/controller/quiz_history.dart';
 import 'package:withbible_app/model/quiz_history.dart';
-import 'package:withbible_app/screen/review_screen.dart';
+import 'package:withbible_app/screen/quiz/review_screen.dart';
 import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/widget/disco_button.dart';
 
@@ -36,13 +36,26 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text('퀴즈 기록'),
+          leading: IconButton(
+            icon: const FaIcon(
+              FontAwesomeIcons.angleLeft,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // TODO: Need after quiz, No need before quiz
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: Container(
           padding: const EdgeInsets.only(left: 10, right: 10),
           alignment: Alignment.center,
           decoration: BoxDecoration(color: ThemeHelper.shadowColor),
           child: Column(
             children: [
-              screenHeader(),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -57,36 +70,6 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // TODO: Need after quiz, No need before quiz
-  Widget screenHeader() {
-    const double margin = 10;
-
-    return Container(
-      margin: const EdgeInsets.only(top: margin, bottom: margin),
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          GestureDetector(
-            child: Container(
-              margin: const EdgeInsets.only(right: margin),
-              child: const FaIcon(
-                FontAwesomeIcons.angleLeft,
-                color: Color(0xff8d5ac4),
-              ),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          Text(
-            "퀴즈 기록",
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ],
       ),
     );
   }
@@ -136,7 +119,7 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
                   onPressed: () {
                     getQuizByTitle(quiz.title, quiz.categoryId).then((quiz) {
                       Navigator.of(context).pushNamed(
-                        ReviewScreen.routeName,
+                        QuizReviewScreen.routeName,
                         arguments: quiz,
                       );
                     });

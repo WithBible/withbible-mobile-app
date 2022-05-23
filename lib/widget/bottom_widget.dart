@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:withbible_app/common/theme_helper.dart';
-import 'package:withbible_app/screen/account_screen.dart';
+import 'package:withbible_app/screen/auth/account_screen.dart';
 import 'package:withbible_app/screen/home_screen.dart';
-import 'package:withbible_app/screen/leader_boards_screen.dart';
-import 'package:withbible_app/screen/quiz_history_screen.dart';
+import 'package:withbible_app/screen/quiz/leader_board_screen.dart';
+import 'package:withbible_app/screen/quiz/history_screen.dart';
 
 class BottomWidget extends StatefulWidget {
   static const routeName = "/bottom";
@@ -17,9 +17,9 @@ class BottomWidget extends StatefulWidget {
 class _BottomWidgetState extends State<BottomWidget> {
   List<Widget> screens = [
     const HomeScreen(),
-    LeaderBoardsScreen(),
+    const LeaderBoardScreen(),
     const QuizHistoryScreen(),
-    AccountScreen()
+    const AccountScreen()
   ];
   int currentIndex = 0;
 

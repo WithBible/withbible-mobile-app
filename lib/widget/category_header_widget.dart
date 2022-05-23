@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:withbible_app/model/category.dart';
-import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
+import 'package:withbible_app/screen/quiz/category_detail_screen.dart';
 
 class CategoryHeaderWidget extends StatelessWidget {
   final Category category;

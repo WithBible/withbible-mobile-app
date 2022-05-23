@@ -5,14 +5,14 @@ import 'package:withbible_app/model/leader_board.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // TODO: Need check didExceedMaxLines
-class LeaderBoardsScreen extends StatefulWidget {
-  const LeaderBoardsScreen({Key? key}) : super(key: key);
+class LeaderBoardScreen extends StatefulWidget {
+  const LeaderBoardScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _LeaderBoardsScreenState();
+  State<StatefulWidget> createState() => _LeaderBoardScreenState();
 }
 
-class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
+class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
   Future<List<LeaderBoard>>? leaderBoardFuture;
 
   @override
@@ -55,11 +55,13 @@ class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
                         ? Container(
                             padding: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
-                                color: Color(0xff8d5ac4),
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(4),
-                                    bottomRight: Radius.circular(4))),
-                            child: buildTopLeaderBoardItem(snapshot.data))
+                              color: Color(0xff8d5ac4),
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(4),
+                                  bottomRight: Radius.circular(4)),
+                            ),
+                            child: buildTopLeaderBoardItem(snapshot.data),
+                          )
                         : buildLeaderBoardItem(index, snapshot.data);
                   });
             },

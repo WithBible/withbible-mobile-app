@@ -4,7 +4,7 @@ import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/controller/quiz.dart';
 import 'package:withbible_app/model/category.dart';
 import 'package:withbible_app/model/quiz.dart';
-import 'package:withbible_app/screen/quiz_screen.dart';
+import 'package:withbible_app/screen/quiz/quiz_screen.dart';
 
 class QuizCategoryDetailScreen extends StatefulWidget {
   static const routeName = '/categoryDetail';

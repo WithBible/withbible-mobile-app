@@ -8,23 +8,23 @@ import 'package:withbible_app/model/quiz.dart';
 import 'package:withbible_app/widget/question_numbers_widget.dart';
 import 'package:withbible_app/widget/question_options_widget.dart';
 
-class ReviewScreen extends StatefulWidget {
+class QuizReviewScreen extends StatefulWidget {
   static const routeName = "/review";
   late Quiz quiz;
 
-  ReviewScreen(this.quiz, {Key? key}) : super(key: key);
+  QuizReviewScreen(this.quiz, {Key? key}) : super(key: key);
 
   @override
-  _ReviewScreenState createState() => _ReviewScreenState(quiz);
+  _QuizReviewScreenState createState() => _QuizReviewScreenState(quiz);
 }
 
-class _ReviewScreenState extends State<ReviewScreen> {
+class _QuizReviewScreenState extends State<QuizReviewScreen> {
   late Quiz quiz;
   Question? question;
   String questionAnswer = '';
   late List<String> answerSheet;
 
-  _ReviewScreenState(this.quiz) {
+  _QuizReviewScreenState(this.quiz) {
     quiz = quiz;
   }
 

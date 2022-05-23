@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/quiz_result.dart';
-import 'package:withbible_app/screen/quiz_history_screen.dart';
+import 'package:withbible_app/screen/quiz/history_screen.dart';
 import 'package:withbible_app/widget/disco_button.dart';
 
 class QuizResultScreen extends StatefulWidget {

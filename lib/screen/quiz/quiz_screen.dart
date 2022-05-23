@@ -11,7 +11,7 @@ import 'package:withbible_app/model/question.dart';
 import 'package:withbible_app/model/quiz.dart';
 import 'package:withbible_app/model/quiz_history.dart';
 import 'package:withbible_app/model/quiz_result.dart';
-import 'package:withbible_app/screen/quiz_result_screen.dart';
+import 'package:withbible_app/screen/quiz/result_screen.dart';
 import 'package:withbible_app/service/quiz_engine.dart';
 import 'package:withbible_app/widget/disco_button.dart';
 import 'package:withbible_app/widget/question_options_widget.dart';
