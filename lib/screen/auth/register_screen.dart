@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/controller/auth.dart';
 import 'package:withbible_app/model/user.dart';
+import 'package:withbible_app/widget/bottom_widget.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register';
@@ -26,7 +25,35 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
   final formKey = GlobalKey<FormState>();
 
   Future<void> _submit() async {
-    print(inspect(formKey.currentState));
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+    formKey.currentState!.save();
+
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      var register = await registerUser(User(
+        nameController.text,
+        usernameController.text,
+        passwordController.text,
+      ));
+
+      if (register == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("오류"),
+            duration: Duration(seconds: 1),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("가입이 완료되었습니다."),
+            duration: Duration(seconds: 1),
+          ),
+        );
+        Navigator.pushReplacementNamed(context, BottomWidget.routeName);
+      }
+    });
   }
 
   @override
@@ -51,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
                   onPressed: () {
                     _submit();
                   },
-                  child: const Text('제출'),
+                  child: const Text('등록'),
                 ),
               ],
             ),
@@ -61,13 +88,15 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
     );
   }
 
-  Widget buildTextField(TextEditingController controller, String textType,
-      {secure: false}) {
+  Widget buildTextField(
+    TextEditingController controller,
+    String textType,
+  ) {
     return Container(
       margin: const EdgeInsets.all(20),
       child: TextFormField(
         controller: controller,
-        obscureText: secure,
+        validator: validateText,
         decoration: InputDecoration(
           labelStyle: TextStyle(color: ThemeHelper.primaryColor),
           labelText: textType,
@@ -92,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
       child: TextFormField(
         controller: controller,
         obscureText: true,
-        // validator: validatePassword,
+        validator: validatePassword,
         decoration: InputDecoration(
           labelStyle: TextStyle(color: ThemeHelper.primaryColor),
           labelText: textType,
