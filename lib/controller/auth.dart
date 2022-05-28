@@ -4,6 +4,9 @@ import 'package:withbible_app/controller/api.dart';
 import 'package:withbible_app/model/user.dart';
 
 class AuthControl {
+  var response;
+  Map<String, dynamic> result = {};
+
   String? validateText(value) {
     if (value!.isEmpty) {
       return '텍스트를 기입해주세요.';
@@ -20,25 +23,38 @@ class AuthControl {
     return null;
   }
 
-  Future<bool> registerUser(User user) async {
+  Future<Map> registerUser(User user) async {
     var url = Uri.parse('${Api.url}/user/register');
     String registerJson = jsonEncode(user);
 
-    var response =
-        await http.post(url, headers: Api.headers, body: registerJson);
+    try{
+      response =
+          await http.post(url, headers: Api.headers, body: registerJson);
+    }catch(error){
+      return result = {
+        'status': false,
+        'message': error
+      };
+    }
 
     if (response.statusCode == 201) {
-      return true;
+      return result = {
+        'status': true,
+      };
     }
-    // TODO: 에러 객체
-    return false;
+
+    var jsonResult = json.decode(response.body);
+    return result = {
+      'status': false,
+      'message': jsonResult['message']
+    };
   }
 
   Future<bool> loginUser(String username, String password) async {
     var url = Uri.parse('${Api.url}/user/login');
     String loginJson = jsonEncode({"username": username, "password": password});
 
-    var response = await http.patch(url, headers: Api.headers, body: loginJson);
+    response = await http.patch(url, headers: Api.headers, body: loginJson);
 
     if (response.statusCode == 200) {
       return true;

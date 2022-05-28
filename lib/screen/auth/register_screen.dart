@@ -31,17 +31,17 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
     formKey.currentState!.save();
 
     Future.delayed(const Duration(milliseconds: 500), () async {
-      var register = await registerUser(User(
+      Map register = await registerUser(User(
         nameController.text,
         usernameController.text,
         passwordController.text,
       ));
 
-      if (register == false) {
+      if (register['status'] == false) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("오류"),
-            duration: Duration(seconds: 1),
+          SnackBar(
+            content: Text('${register['message']}'),
+            duration: const Duration(seconds: 1),
           ),
         );
       } else {
