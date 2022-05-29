@@ -3,7 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/controller/auth.dart';
 import 'package:withbible_app/model/user.dart';
+import 'package:withbible_app/screen/auth/login_screen.dart';
 import 'package:withbible_app/widget/bottom_widget.dart';
+import 'package:withbible_app/widget/disco_button.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register';
@@ -28,6 +30,10 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
     if (!formKey.currentState!.validate()) {
       return;
     }
+
+    setState(() {
+      visibleLoading = true;
+    });
     formKey.currentState!.save();
 
     Future.delayed(const Duration(milliseconds: 500), () async {
@@ -53,6 +59,10 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
         );
         Navigator.pushReplacementNamed(context, BottomWidget.routeName);
       }
+
+      setState(() {
+        visibleLoading = false;
+      });
     });
   }
 
@@ -68,18 +78,16 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
         key: formKey,
         child: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.only(top: 70),
+            margin: const EdgeInsets.only(top: 40),
             child: Column(
               children: [
                 buildTextField(nameController, '성함'),
                 buildTextField(usernameController, '아이디'),
                 buildPasswordField(passwordController, '비밀번호'),
-                ElevatedButton(
-                  onPressed: () {
-                    _submit();
-                  },
-                  child: const Text('등록'),
-                ),
+                buildButton(),
+                buildPageRoute(),
+                const SizedBox(height: 10),
+                buildFooter()
               ],
             ),
           ),
@@ -88,10 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
     );
   }
 
-  Widget buildTextField(
-    TextEditingController controller,
-    String textType,
-  ) {
+  Widget buildTextField(TextEditingController controller, String textType) {
     return Container(
       margin: const EdgeInsets.all(20),
       child: TextFormField(
@@ -142,5 +147,57 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
         ),
       ),
     );
+  }
+
+  Widget buildButton() {
+    return DiscoButton(
+      onPressed: _submit,
+      child: !visibleLoading
+          ? const Text(
+              '등록',
+              style: TextStyle(color: Color(0xfffbce7b), fontSize: 16),
+              textAlign: TextAlign.center,
+            )
+          : Visibility(
+              visible: visibleLoading,
+              child: const Center(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1.6,
+                    color: Color(0xfffbce7b),
+                  ),
+                ),
+              ),
+            ),
+      width: 100,
+      height: 50,
+    );
+  }
+
+  Widget buildPageRoute() {
+    return Container(
+      margin: const EdgeInsets.only(right: 20, left: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('계정이 있으시다면?'),
+          const SizedBox(width: 10),
+          GestureDetector(
+              onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  ),
+              child:
+                  const Text('로그인', style: TextStyle(color: Color(0xfffbce7b))))
+        ],
+      ),
+    );
+  }
+
+  Widget buildFooter() {
+    return Container(
+        margin: const EdgeInsets.only(right: 20, left: 20),
+        child: const Text('등록을 누르시면 개인정보 수집에 동의하게됩니다.'));
   }
 }
