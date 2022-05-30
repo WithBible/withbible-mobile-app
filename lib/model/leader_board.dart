@@ -1,17 +1,27 @@
-class LeaderBoard {
-  String name;
-  String username;
-  String photoPath;
-  int score;
+import 'package:withbible_app/model/user.dart';
 
-  LeaderBoard(this.name, this.username, this.photoPath, this.score);
+class LeaderBoard extends UserBase {
+  String photoPath;
+  int totalScore;
+
+  LeaderBoard(
+    name,
+    username,
+    this.photoPath,
+    this.totalScore,
+  ) : super(name, username);
 
   static jsonToObject(dynamic json) {
+    late UserBase user;
+
+    if (json["user"] != null) {
+      user = UserBase.fromJson(json["user"]);
+    }
     return LeaderBoard(
-      json["name"],
-      json["username"],
+      json["name"] = user.name,
+      json["username"] = user.username,
       json["photoPath"],
-      json["score"],
+      json["totalScore"],
     );
   }
 }
