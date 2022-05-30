@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/controller/auth.dart';
 import 'package:withbible_app/model/user.dart';
-import 'package:withbible_app/screen/auth/login_screen.dart';
+import 'package:withbible_app/screen/auth/register_screen.dart';
+import 'package:withbible_app/widget/bottom_widget.dart';
 import 'package:withbible_app/widget/disco_button.dart';
 
-class RegisterScreen extends StatefulWidget {
-  static const routeName = '/register';
+class LoginScreen extends StatefulWidget {
+  static const routeName = '/login';
 
-  const RegisterScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _RegisterScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
+class _LoginScreenState extends State<LoginScreen> with AuthControl {
   bool visibleLoading = false;
-  late SharedPreferences preferences;
 
-  TextEditingController nameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -36,31 +34,48 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
     formKey.currentState!.save();
 
     Future.delayed(const Duration(milliseconds: 500), () async {
-      Map register = await registerUser(User(
-        nameController.text,
+      Map login = await loginUser(
         usernameController.text,
         passwordController.text,
-      ));
+      );
 
       setState(() {
         visibleLoading = false;
       });
 
-      if (!register['status']) {
+      if (!login['status']) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${register['message']}'),
+            content: Text('${login['message']}'),
             duration: const Duration(seconds: 1),
           ),
         );
+        setUser(UserBase(login['data']['name'], login['data']['username']));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("가입이 완료되었습니다."),
+            content: Text("로그인이 완료되었습니다."),
             duration: Duration(seconds: 1),
           ),
         );
-        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const BottomWidget()),
+            (Route<dynamic> route) => false);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    AuthControl.getUser().then((value) {
+      if (value != null) {
+        setState(() {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const BottomWidget()),
+              (Route<dynamic> route) => false);
+        });
       }
     });
   }
@@ -71,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
       backgroundColor: ThemeHelper.shadowColor,
       appBar: AppBar(
         elevation: 0,
-        title: const Text('회원 등록'),
+        title: const Text('로그인'),
       ),
       body: Form(
         key: formKey,
@@ -80,13 +95,10 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
             margin: const EdgeInsets.only(top: 40),
             child: Column(
               children: [
-                buildTextField(nameController, '성함'),
                 buildTextField(usernameController, '아이디'),
                 buildPasswordField(passwordController, '비밀번호'),
                 buildButton(),
                 buildPageRoute(),
-                const SizedBox(height: 10),
-                buildFooter()
               ],
             ),
           ),
@@ -153,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
       onPressed: _submit,
       child: !visibleLoading
           ? const Text(
-              '등록',
+              '로그인',
               style: TextStyle(color: Color(0xfffbce7b), fontSize: 16),
               textAlign: TextAlign.center,
             )
@@ -181,22 +193,17 @@ class _RegisterScreenState extends State<RegisterScreen> with AuthControl {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('계정이 있으시다면?'),
+          const Text('계정이 없으시다면?'),
           const SizedBox(width: 10),
           GestureDetector(
-              onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  ),
-              child:
-                  const Text('로그인', style: TextStyle(color: Color(0xfffbce7b))))
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const RegisterScreen()),
+            ),
+            child:
+                const Text('회원 등록', style: TextStyle(color: Color(0xfffbce7b))),
+          )
         ],
       ),
     );
-  }
-
-  Widget buildFooter() {
-    return Container(
-        margin: const EdgeInsets.only(right: 20, left: 20),
-        child: const Text('등록을 누르시면 개인정보 수집에 동의하게됩니다.'));
   }
 }

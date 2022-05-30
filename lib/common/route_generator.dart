@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:withbible_app/model/category.dart';
 import 'package:withbible_app/model/quiz.dart';
 import 'package:withbible_app/model/quiz_result.dart';
+import 'package:withbible_app/screen/auth/login_screen.dart';
+import 'package:withbible_app/screen/auth/register_screen.dart';
 import 'package:withbible_app/screen/home_screen.dart';
 import 'package:withbible_app/screen/quiz/category_detail_screen.dart';
 import 'package:withbible_app/screen/quiz/history_screen.dart';
@@ -18,6 +20,10 @@ class RouteGenerator {
     switch (settings.name) {
       case SplashScreen.routeName:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case RegisterScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const RegisterScreen());
+      case LoginScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case BottomWidget.routeName:
         return MaterialPageRoute(builder: (_) => const BottomWidget());
       case HomeScreen.routeName:

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/route_generator.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await QuizStore.initPrefs();
   runApp(const QuizApp());
 }
 
