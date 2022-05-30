@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:withbible_app/common/theme_helper.dart';
+import 'package:withbible_app/controller/auth.dart';
 import 'package:withbible_app/data/categories.dart';
-import 'package:withbible_app/data/user.dart';
 import 'package:withbible_app/screen/quiz/category_detail_screen.dart';
 import 'package:withbible_app/widget/category_header_widget.dart';
 
@@ -15,6 +15,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String name = '';
+
+  @override
+  void initState() {
+    AuthControl.getUser().then((value) {
+      setState(() {
+        name = value[0];
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

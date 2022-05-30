@@ -50,8 +50,9 @@ class _LoginScreenState extends State<LoginScreen> with AuthControl {
             duration: const Duration(seconds: 1),
           ),
         );
-        setUser(UserBase(login['data']['name'], login['data']['username']));
       } else {
+        setUser(UserBase(login['data']['name'], login['data']['username']));
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("로그인이 완료되었습니다."),

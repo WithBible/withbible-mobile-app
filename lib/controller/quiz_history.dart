@@ -6,7 +6,9 @@ import 'package:withbible_app/model/leader_board.dart';
 import 'package:withbible_app/model/quiz_history.dart';
 
 Future<List<QuizHistory>> loadQuizHistory() async {
-  String name = await AuthControl.getUser()[0];
+  var user = await AuthControl.getUser();
+  String name = user[0];
+
   var url = Uri.parse('${Api.url}/history?name=$name');
   var response = await http.get(url, headers: Api.headers);
   var jsonResult = json.decode(response.body);
@@ -18,7 +20,9 @@ Future<List<QuizHistory>> loadQuizHistory() async {
 }
 
 Future<QuizHistory?> loadQuizHistoryByTitle(String title) async {
-  String name = await AuthControl.getUser()[0];
+  var user = await AuthControl.getUser();
+  String name = user[0];
+
   var url = Uri.parse('${Api.url}/history?name=$name&title=$title');
   var response = await http.get(url, headers: Api.headers);
 
