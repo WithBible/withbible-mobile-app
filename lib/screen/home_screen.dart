@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/data/categories.dart';
 import 'package:withbible_app/data/user.dart';
-import 'package:withbible_app/screen/quiz_category_detail_screen.dart';
-import 'package:withbible_app/store/quiz_store.dart';
+import 'package:withbible_app/screen/quiz/category_detail_screen.dart';
 import 'package:withbible_app/widget/category_header_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,12 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    // +++ Will handover from login screen
-    QuizStore.setName(name);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

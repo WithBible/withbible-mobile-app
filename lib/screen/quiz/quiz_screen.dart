@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:withbible_app/common/extensions.dart';
+import 'package:withbible_app/controller/auth.dart';
+import 'package:withbible_app/controller/quiz.dart';
 import 'package:withbible_app/controller/quiz_history.dart';
-import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/common/theme_helper.dart';
 import 'package:withbible_app/model/dto/option_selection.dart';
 import 'package:withbible_app/model/option.dart';
@@ -28,7 +29,6 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   late QuizEngine engine;
-  late QuizStore store;
   late Quiz quiz;
   Question? question;
   AppLifecycleState? state;
@@ -36,7 +36,6 @@ class _QuizScreenState extends State<QuizScreen> {
   Map<int, OptionSelection> _optionSerial = {};
 
   _QuizScreenState(this.quiz) {
-    store = QuizStore();
     engine = QuizEngine(
         quiz, onPrevQuestion, onNextQuestion, onQuizCancel, onQuizComplete);
   }
@@ -220,8 +219,8 @@ class _QuizScreenState extends State<QuizScreen> {
     Duration takenTime,
     List<String> answerSheet,
   ) {
-    Future nameFuture = QuizStore.getName('name');
-    Future categoryFuture = store.getCategoryLocalAsync(quiz.categoryId);
+    Future nameFuture = AuthControl.getUser();
+    Future categoryFuture = getCategoryLocalAsync(quiz.categoryId);
     Future historyFuture = loadQuizHistoryByTitle(quiz.title);
 
     Future.wait([nameFuture, categoryFuture, historyFuture]).then((value) {

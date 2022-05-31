@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:withbible_app/controller/api.dart';
+import 'package:withbible_app/controller/auth.dart';
 import 'package:withbible_app/model/leader_board.dart';
 import 'package:withbible_app/model/quiz_history.dart';
-import 'package:withbible_app/store/quiz_store.dart';
 
 Future<List<QuizHistory>> loadQuizHistory() async {
-  String name = await QuizStore.getName('name');
+  String name = await AuthControl.getUser()[0];
   var url = Uri.parse('${Api.url}/history?name=$name');
   var response = await http.get(url, headers: Api.headers);
   var jsonResult = json.decode(response.body);
@@ -18,7 +18,7 @@ Future<List<QuizHistory>> loadQuizHistory() async {
 }
 
 Future<QuizHistory?> loadQuizHistoryByTitle(String title) async {
-  String name = await QuizStore.getName('name');
+  String name = await AuthControl.getUser()[0];
   var url = Uri.parse('${Api.url}/history?name=$name&title=$title');
   var response = await http.get(url, headers: Api.headers);
 

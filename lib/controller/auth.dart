@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:withbible_app/controller/api.dart';
 import 'package:withbible_app/model/user.dart';
 
@@ -27,38 +28,45 @@ class AuthControl {
     var url = Uri.parse('${Api.url}/user/register');
     String registerJson = jsonEncode(user);
 
-    try{
-      response =
-          await http.post(url, headers: Api.headers, body: registerJson);
-    }catch(error){
-      return result = {
-        'status': false,
-        'message': error
-      };
+    try {
+      response = await http.post(url, headers: Api.headers, body: registerJson);
+    } catch (error) {
+      return result = {'status': false, 'message': error};
     }
 
     if (response.statusCode == 201) {
-      return result = {
-        'status': true,
-      };
+      return result = {'status': true};
     }
 
     var jsonResult = json.decode(response.body);
-    return result = {
-      'status': false,
-      'message': jsonResult['message']
-    };
+    return result = {'status': false, 'message': jsonResult['message']};
   }
 
-  Future<bool> loginUser(String username, String password) async {
+  Future<Map> loginUser(String username, String password) async {
     var url = Uri.parse('${Api.url}/user/login');
     String loginJson = jsonEncode({"username": username, "password": password});
 
-    response = await http.patch(url, headers: Api.headers, body: loginJson);
-
-    if (response.statusCode == 200) {
-      return true;
+    try {
+      response = await http.patch(url, headers: Api.headers, body: loginJson);
+    } catch (error) {
+      return result = {'status': false, 'message': error};
     }
-    return false;
+
+    var jsonResult = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return result = {'status': true, 'data': jsonResult["data"]};
+    }
+
+    return result = {'status': false, 'message': jsonResult['message']};
+  }
+
+  setUser(UserBase userBase) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.setStringList('user', [userBase.name, userBase.username]);
+  }
+
+  static getUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getStringList('user');
   }
 }
