@@ -5,7 +5,6 @@ import 'package:withbible_app/controller/quiz.dart';
 import 'package:withbible_app/controller/quiz_history.dart';
 import 'package:withbible_app/model/quiz_history.dart';
 import 'package:withbible_app/screen/quiz/review_screen.dart';
-import 'package:withbible_app/store/quiz_store.dart';
 import 'package:withbible_app/widget/disco_button.dart';
 
 class QuizHistoryScreen extends StatefulWidget {
@@ -19,16 +18,15 @@ class QuizHistoryScreen extends StatefulWidget {
 
 class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
   List<QuizHistory> quizHistoryList = [];
-  late QuizStore store;
 
   @override
   void initState() {
-    store = QuizStore();
     loadQuizHistory().then((value) {
       setState(() {
         quizHistoryList = value;
       });
     });
+
     super.initState();
   }
 
@@ -95,18 +93,22 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
             ),
           ),
           Expanded(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                quiz.title.isEmpty ? "Question" : quiz.title,
-                style: const TextStyle(fontSize: 24),
-              ),
-              Text("Score: ${quiz.score}",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  quiz.title.isEmpty ? "Question" : quiz.title,
+                  style: const TextStyle(fontSize: 24),
+                ),
+                Text(
+                  "Score: ${quiz.score}",
                   style:
-                      TextStyle(color: ThemeHelper.accentColor, fontSize: 18)),
-              Text("Time Taken: ${quiz.timeTaken}"),
-              Text("Date: ${quiz.date}"),
-            ]),
+                      TextStyle(color: ThemeHelper.accentColor, fontSize: 18),
+                ),
+                Text("Time Taken: ${quiz.timeTaken}"),
+                Text("Date: ${quiz.date}"),
+              ],
+            ),
           ),
           Column(
             children: [

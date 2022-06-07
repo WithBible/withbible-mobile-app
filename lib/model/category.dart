@@ -7,9 +7,10 @@ class Category {
   late Color backgroundColor;
   late IconData icon;
 
-  Category(
-      {this.id = 0,
-      this.name = '',
-      this.backgroundColor = const Color(0xfffbce7b),
-      this.icon = FontAwesomeIcons.question});
+  Category({
+    this.id = 0,
+    this.name = '',
+    this.backgroundColor = const Color(0xfffbce7b),
+    this.icon = FontAwesomeIcons.question,
+  });
 }

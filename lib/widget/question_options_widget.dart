@@ -46,11 +46,11 @@ class QuestionOptionsWidget extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xff8d5ac4), width: 4),
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          color: isSelected
-              ? Theme.of(context).colorScheme.secondary
-              : Colors.white),
+        border: Border.all(color: const Color(0xff8d5ac4), width: 4),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        color:
+            isSelected ? Theme.of(context).colorScheme.secondary : Colors.white,
+      ),
     );
   }
 
@@ -60,10 +60,11 @@ class QuestionOptionsWidget extends StatelessWidget {
       child: Text(
         code,
         style: TextStyle(
-            color: isSelected
-                ? Colors.white
-                : Theme.of(context).colorScheme.secondary,
-            fontSize: 30),
+          color: isSelected
+              ? Colors.white
+              : Theme.of(context).colorScheme.secondary,
+          fontSize: 30,
+        ),
       ),
     );
   }

@@ -17,8 +17,9 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
 
   @override
   void initState() {
-    super.initState();
     leaderBoardFuture = loadLeaderBoard();
+
+    super.initState();
   }
 
   @override
@@ -107,7 +108,7 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
               ),
               const Spacer(),
               Text(
-                '${data[index].score}',
+                '${data[index].totalScore}',
                 style: const TextStyle(color: Colors.white, fontSize: 24),
               ),
             ],
@@ -133,7 +134,7 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
         ),
         const Spacer(),
         Text(
-          data[index].score.toString(),
+          '${data[index].totalScore}',
           style: const TextStyle(color: Colors.black, fontSize: 14),
         ),
       ],

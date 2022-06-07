@@ -90,7 +90,7 @@ class _QuizResultScreenState extends State<QuizResultScreen> {
             },
             child: const Text(
               "Close",
-              style: TextStyle(color: Color(0xff8d5ac4), fontSize: fontSize),
+              style: TextStyle(color: Color(0xfffbce7b), fontSize: fontSize),
             ),
             width: width,
             height: height,

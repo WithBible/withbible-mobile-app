@@ -1,15 +1,23 @@
 class QuizHistory {
-  String name = "";
-  int categoryId = 0;
-  String title = "";
+  late String name;
+  late int categoryId;
+  late String title;
   late List<String> answerSheet;
-  String score = "";
-  String timeTaken = "";
-  String date = "";
-  String status = "";
+  late String score;
+  late String timeTaken;
+  late String date;
+  late String status;
 
-  QuizHistory(this.name, this.categoryId, this.title, this.answerSheet,
-      this.score, this.timeTaken, this.date, this.status);
+  QuizHistory(
+    this.name,
+    this.categoryId,
+    this.title,
+    this.answerSheet,
+    this.score,
+    this.timeTaken,
+    this.date,
+    this.status,
+  );
 
   static jsonToObject(dynamic json) {
     List<String> answerSheetList = [];

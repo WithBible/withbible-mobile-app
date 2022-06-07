@@ -14,7 +14,11 @@ class Quiz {
       questionList = List<Question>.from(
           json["questions"].map((x) => Question.fromJson(x)));
     }
-    return Quiz(json["categoryId"], json["title"], json["shuffleQuestions"],
-        questionList);
+    return Quiz(
+      json["categoryId"],
+      json["title"],
+      json["shuffleQuestions"],
+      questionList,
+    );
   }
 }

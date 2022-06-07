@@ -224,7 +224,7 @@ class _QuizScreenState extends State<QuizScreen> {
     Future historyFuture = loadQuizHistoryByTitle(quiz.title);
 
     Future.wait([nameFuture, categoryFuture, historyFuture]).then((value) {
-      String name = value[0];
+      String name = value[0][0];
       int categoryId = value[1].id;
       String? score = value[2]?.score;
       String status = getStatus(total, quiz.questions.length);

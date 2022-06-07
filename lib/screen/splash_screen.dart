@@ -18,6 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
         builder: (context) => const LoginScreen(),
       ));
     });
+
     super.initState();
   }
 
